@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>HTML5 SpaceShip</title>
+        <!--import createjs-->
+        <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+        <script src="src/Global.js"></script>
+        <script src="src/ContentManager.js"></script>
+        <script src="src/KeyboardHandler.js"></script>
+        <script src="src/MouseHelper.js"></script>
+        <script src="src/Ship.js"></script>
+        <script src="src/Game.js"></script>
+        <script>
+            var game = new Game();
+            function init() {
+                game.init();
+            }
+        </script>
+    </head>
+
+    <body onload="init()">
+        <div class="canvasHolder">
+            <canvas id="gameCanvas" width="800" height="480" style="background-color: black;"></canvas>
+        </div>
+    </body>
+</html>
