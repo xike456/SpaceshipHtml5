@@ -45,7 +45,7 @@ function Game() {
     Game.prototype.resizeToFullWidthCanvas = function () {
         if (resizeTimeout)
             clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout("resizeToFullWidthCanvas_()", 100);
+        resizeTimeout = setTimeout("game.resizeToFullWidthCanvas_()", 100);
     };
 
     Game.prototype.init = function () {
@@ -56,8 +56,6 @@ function Game() {
 
         Global.getInstance().stage = stage;
         Global.getInstance().mouseHelper = mouseHelper;
-
-        console.log(Global.getInstance().stage);
 
         //init gamestage
         gameStage = new createjs.Container();
@@ -71,8 +69,8 @@ function Game() {
         world.initWorld();
 
         game.resizeToFullWidthCanvas_();
-        //game.resizeToFullWidthCanvas();
-        //window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
+        game.resizeToFullWidthCanvas();
+        window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
 
         document.onkeydown = function () {
             event = window.event;
@@ -88,26 +86,26 @@ function Game() {
     };
 
 
-    function initWorld(){
-        world.MakeCameraAroundShip = function (x,y) {
-            var browserW = $(window).innerWidth();
-            var browserH = $(window).innerHeight();
-            if (ship.x > -2000 && ship.x < 2000) {
-                world.x = -ship.x;
-            }
-            if (ship.y > -2000 && ship.y < 2000) {
-                world.y = -ship.y;
-            }
-        };
-        world.screenPos2WorldPos =function(x,y){
-
-        }
-        world.worldPos2ScreenPos =function(x,y){
-
-        }
-
-        addWorldGrid();
-    }
+    // function initWorld(){
+    //     world.MakeCameraAroundShip = function (x,y) {
+    //         var browserW = $(window).innerWidth();
+    //         var browserH = $(window).innerHeight();
+    //         if (ship.x > -2000 && ship.x < 2000) {
+    //             world.x = -ship.x;
+    //         }
+    //         if (ship.y > -2000 && ship.y < 2000) {
+    //             world.y = -ship.y;
+    //         }
+    //     };
+    //     world.screenPos2WorldPos =function(x,y){
+    //
+    //     }
+    //     world.worldPos2ScreenPos =function(x,y){
+    //
+    //     }
+    //
+    //     addWorldGrid();
+    // }
 
 
     function addWorldGrid(){
@@ -145,8 +143,13 @@ function Game() {
     Game.prototype.StartGame = function () {
         console.log('game start');
 
-        ship = new Ship();
+        var pieceData = initShipData();
+        ship = new Ship(pieceData);
         world.addShip(ship);
+        //ship.initialize(pieceData);
+        //ship.x = 0;
+        //ship.y = 0;
+
         // we want to do some work before we update the canvas,
         // otherwise we could use Ticker.addListener(stage);
         createjs.Ticker.addEventListener('tick', game.update);
@@ -154,4 +157,28 @@ function Game() {
         createjs.Ticker.useRAF = true;
         createjs.Ticker.setFPS(60);
     };
+
+    function initShipData() {
+        var piecesData = [];
+        var typePiece;
+        var arr;
+        for (var i = -3; i < 3; i++) {
+            for (var j = -2; j < 2; j++) {
+                if (i != 0 || j != 0) {
+                    if ((i + j) % 2 == 0) {
+                        typePiece = Math.floor(Math.random() * 5) + 1;
+                        arr = {'x' : i * 2, 'y' : j, 'type' : typePiece};
+                        piecesData.push(arr);
+                    }
+
+                }else {
+                    arr = {'x' : i * 2, 'y' : j, 'type' : 6};
+                    piecesData.push(arr);
+                }
+
+            }
+        }
+        console.log(piecesData);
+        return piecesData;
+    }
 }
