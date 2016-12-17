@@ -1,9 +1,10 @@
 function KeyboardHelper() {
-
-    this.isKeyDown = function(e, keyCode) {
-        if (!e) return false;
-
-        if (e.keyCode === keyCode) {
+    this.currentKeyDown;
+    this.isKeyDown = function(keyCode) {
+        if(!this.currentKeyDown){
+            return false;
+        }
+        if (keyCode === this.currentKeyDown.keyCode) {
             return true;
         }
         return false;

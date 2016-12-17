@@ -50,11 +50,11 @@
             piece.update(event);
         });
 
-        if (Global.getInstance().keyboardHelper.isKeyDown(Global.getInstance().event, Constants.KEYCODE_A)) {
+        if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_A)) {
             this.rotation += 180*deltaTime;
         }
 
-        if (Global.getInstance().keyboardHelper.isKeyDown(Global.getInstance().event, Constants.KEYCODE_D)) {
+        if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_D)) {
             this.rotation -= 180*deltaTime;
         }
     };

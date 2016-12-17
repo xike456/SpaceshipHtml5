@@ -3,7 +3,6 @@ function Game() {
     var stage;
     var contentManager;
     var game;
-    var keyboardHelper;
     var mouseHelper;
 
     var ship;
@@ -72,14 +71,19 @@ function Game() {
         game.resizeToFullWidthCanvas();
         window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
 
-        document.onkeypress = function () {
-            Global.getInstance().event = window.event;
-        };
+        kd.A.down(function () {
+            Global.getInstance().keyboardHelper.currentKeyDown = kd.A;
+        });
+        kd.D.down(function () {
+            Global.getInstance().keyboardHelper.currentKeyDown = kd.D;
+        });
 
-        document.onkeyup = function () {
-            Global.getInstance().event = null;
-        };
-
+        kd.A.up(function () {
+            Global.getInstance().keyboardHelper.currentKeyDown = undefined;
+        });
+        kd.D.up(function () {
+            Global.getInstance().keyboardHelper.currentKeyDown = undefined;
+        });
         contentManager = new ContentManager(stage, 800, 480);
         contentManager.SetDownloadCompleted(game.StartGame);
         contentManager.StartDownload();
@@ -131,6 +135,8 @@ function Game() {
 
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
+        kd.tick();
+        console.log(Global.getInstance().keyboardHelper.currentKeyDown);
         ship.update(event);
         world.update(event);
         stage.update();
