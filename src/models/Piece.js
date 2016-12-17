@@ -3,7 +3,7 @@
  */
 function Piece(piece_type, x ,y) {
     prototypePiece.initialize(piece_type,x ,y);
-    var bitmap = new createjs.Bitmap("img/Parts/64/SHIP6401.png");
+    var bitmap = new createjs.Bitmap("img/Parts/64/SHIP6402.png");
     bitmap.x = -Constants.PIECE_WIDTH/2;
     bitmap.y = -Constants.PIECE_HEIGHT/2;
     this.addChild(bitmap);

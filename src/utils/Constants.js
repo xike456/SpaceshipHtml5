@@ -5,7 +5,7 @@ var Constants = function () {
     return {
         COMPONENT_TYPE: {
             BASE  : 1,
-            BASE_GUN : 2,
+            ARMOR : 2,
             MACHINE_GUN : 3,
             CANNON : 4,
             PROPULSOR : 5,

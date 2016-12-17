@@ -56,7 +56,21 @@ prototypeShip.update = function (event) {
 
 prototypeShip.addBody = function (pieces) {
     for (var i = 0; i < pieces.length; i++) {
-        var piece = new Piece(pieces[i].type, pieces[i].x, pieces[i].y);
+        var piece;
+        switch (pieces[i].type) {
+            case Constants.COMPONENT_TYPE.BASE:
+                piece = new Piece(pieces[i].type, pieces[i].x, pieces[i].y);
+                break;
+            case Constants.COMPONENT_TYPE.MACHINE_GUN:
+                piece = new MachineGun(pieces[i].type, pieces[i].x, pieces[i].y);
+                break;
+            case Constants.COMPONENT_TYPE.CANNON:
+                piece = new Cannon(pieces[i].type, pieces[i].x, pieces[i].y);
+                break;
+            default:
+                piece = new Piece(pieces[i].type, pieces[i].x, pieces[i].y);
+                break;
+        }
         this.addChild(piece);
     }
 };
