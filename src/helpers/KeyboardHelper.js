@@ -1,4 +1,4 @@
-function KeyboardHandler() {
+function KeyboardHelper() {
     var KEYCODE_ENTER = 13;
     var KEYCODE_SPACE = 32;
     var KEYCODE_UP = 38;
@@ -40,8 +40,4 @@ function KeyboardHandler() {
     this.handleKeyDown = function (e) {
 
     };
-
-
-    //document.onkeyup = this.handleKeyUp;
-    //document.onkeydown = this.handleKeyDown;
 }

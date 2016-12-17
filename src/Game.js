@@ -51,7 +51,7 @@ function Game() {
     Game.prototype.init = function () {
         var canvas = document.getElementById('gameCanvas');
         stage = new createjs.Stage(canvas);
-        keyboardHandler = new KeyboardHandler();
+        keyboardHandler = new KeyboardHelper();
         mouseHelper = new MouseHelper(canvas);
 
         Global.getInstance().stage = stage;
