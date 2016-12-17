@@ -3,9 +3,8 @@ function Game() {
     var stage;
     var contentManager;
     var game;
-    var keyboardHandler;
+    var keyboardHelper;
     var mouseHelper;
-    var event;
 
     var ship;
 
@@ -51,11 +50,12 @@ function Game() {
     Game.prototype.init = function () {
         var canvas = document.getElementById('gameCanvas');
         stage = new createjs.Stage(canvas);
-        keyboardHandler = new KeyboardHelper();
+        keyboardHelper = new KeyboardHelper();
         mouseHelper = new MouseHelper(canvas);
 
         Global.getInstance().stage = stage;
         Global.getInstance().mouseHelper = mouseHelper;
+        Global.getInstance().keyboardHelper = keyboardHelper;
 
         //init gamestage
         gameStage = new createjs.Container();
@@ -72,13 +72,13 @@ function Game() {
         game.resizeToFullWidthCanvas();
         window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
 
-        document.onkeydown = function () {
-            event = window.event;
-        }
+        document.onkeypress = function () {
+            Global.getInstance().event = window.event;
+        };
 
         document.onkeyup = function () {
-            event = null;
-        }
+            Global.getInstance().event = null;
+        };
 
         contentManager = new ContentManager(stage, 800, 480);
         contentManager.SetDownloadCompleted(game.StartGame);
