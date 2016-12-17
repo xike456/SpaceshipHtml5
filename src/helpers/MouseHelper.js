@@ -7,7 +7,7 @@ function MouseHelper(canvas) {
             x: evt.clientX - rect.left,
             y: evt.clientY - rect.top
         }
-    })
+    });
 
     this.getMousePos = function() {
         return mousePos;

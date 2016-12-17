@@ -5,7 +5,6 @@
         this.y = 0;
         this.vX = 0;
         this.vY = 0;
-        this.speed = 100;
         this.listPiece = [];
         this.addBody(pieces);
         this.rotation = 0;
@@ -40,8 +39,8 @@
         //accelerate
         this.vX = Math.cos(angle);
         this.vY = Math.sin(angle);
-        var tempX = this.x + this.vX * this.speed * deltaTime;
-        var tempY = this.y + this.vY * this.speed * deltaTime;
+        var tempX = this.x + this.vX * Constants.SHIP_SPEED * deltaTime;
+        var tempY = this.y + this.vY * Constants.SHIP_SPEED * deltaTime;
 
         this.x = (tempX < 2000 && tempX > -2000)? tempX : (tempX < 0? -2000: 2000);
         this.y = (tempY < 2000 && tempY > -2000)? tempY : (tempY < 0? -2000: 2000);
@@ -51,11 +50,11 @@
         });
 
         if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_A)) {
-            this.rotation += 180*deltaTime;
+            this.rotation -= Constants.SHIP_ROTATION_SPEED * deltaTime;
         }
 
         if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_D)) {
-            this.rotation -= 180*deltaTime;
+            this.rotation += Constants.SHIP_ROTATION_SPEED * deltaTime;
         }
     };
 

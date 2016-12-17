@@ -24,6 +24,8 @@ var Constants = function () {
         KEYCODE_W: 87,
         KEYCODE_A: 65,
         KEYCODE_D: 68,
-        KEYCODE_: 83
+        KEYCODE_S: 83,
+        SHIP_ROTATION_SPEED: 180,
+        SHIP_SPEED: 180
     };
 }();

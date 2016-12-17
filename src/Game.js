@@ -4,27 +4,23 @@ function Game() {
     var contentManager;
     var game;
     var mouseHelper;
-
     var ship;
-
     var world;
     var gameStage;
 
-    if(game === undefined || game === null)
-    {
+    if(game === undefined || game === null) {
         game = this;
     }
 
     Game.prototype.resizeToFullWidthCanvas_ = function () {
-        var browserW = $(window).width();//window.innerWidth ? window.innerWidth : (document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth);// $(window).innerWidth();
-        var browserH = $(window).height();//window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);//$(window).innerHeight();
+        var browserW = $(window).width();
+        var browserH = $(window).height();
 
         console.log('Width: ' + browserW + '  Height: ' + browserH);
 
         stage.canvas.width = browserW;
         stage.canvas.height = browserH;
 
-        //vi tri canh center top.
         gameStage.x = browserW/2;
         gameStage.y = browserH/2;
 
@@ -90,53 +86,13 @@ function Game() {
     };
 
 
-    // function initWorld(){
-    //     world.MakeCameraAroundShip = function (x,y) {
-    //         var browserW = $(window).innerWidth();
-    //         var browserH = $(window).innerHeight();
-    //         if (ship.x > -2000 && ship.x < 2000) {
-    //             world.x = -ship.x;
-    //         }
-    //         if (ship.y > -2000 && ship.y < 2000) {
-    //             world.y = -ship.y;
-    //         }
-    //     };
-    //     world.screenPos2WorldPos =function(x,y){
-    //
-    //     }
-    //     world.worldPos2ScreenPos =function(x,y){
-    //
-    //     }
-    //
-    //     addWorldGrid();
-    // }
-
-
-    function addWorldGrid(){
-        var worldLine = new createjs.Shape();
-
-        var g = worldLine.graphics;
-        g.clear();
-        g.setStrokeStyle(1);
-        g.beginStroke("#007300");
-
-        for (var i = -WORLD_SIZE_PIXEL / 2; i <= WORLD_SIZE_PIXEL / 2; i+=500){
-            g.moveTo(-WORLD_SIZE_PIXEL / 2, i);	//nose
-            g.lineTo(WORLD_SIZE_PIXEL / 2, i);	//rfin
-
-            g.moveTo(i, -WORLD_SIZE_PIXEL / 2);	//nose
-            g.lineTo(i, WORLD_SIZE_PIXEL / 2);	//rfin
-        }
-
-        g.closePath(); // nose
-        world.addChild(worldLine);
-        //world.cache(-2000,-2000, 4000, 4000);
-    }
+    window.oncontextmenu = function () {
+        return false;     // cancel default menu
+    };
 
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
         kd.tick();
-        console.log(Global.getInstance().keyboardHelper.currentKeyDown);
         ship.update(event);
         world.update(event);
         stage.update();
@@ -150,10 +106,7 @@ function Game() {
         ship = new Ship(pieceData);
         world.addShip(ship);
 
-        // we want to do some work before we update the canvas,
-        // otherwise we could use Ticker.addListener(stage);
         createjs.Ticker.addEventListener('tick', game.update);
-        // Targeting 60 FPS
         createjs.Ticker.useRAF = true;
         createjs.Ticker.setFPS(60);
     };
