@@ -1,19 +1,5 @@
 function Ship(pieces) {
-    prototypeShip.initialize(pieces);
-};
-
-var prototypeShip = Ship.prototype = new createjs.Container();
-
-//public variable
-prototypeShip.speed;
-prototypeShip.vX;
-prototypeShip.vY;
-prototypeShip.listPiece = [];
-
-prototypeShip.Container_initialize = prototypeShip.initialize;
-
-prototypeShip.initialize = function (pieces) {
-    this.Container_initialize();
+    prototypeShip.initialize();
     this.x = 0;
     this.y = 0;
     this.vX = 0;
@@ -21,6 +7,16 @@ prototypeShip.initialize = function (pieces) {
     this.speed = 100;
 
     this.addBody(pieces);
+};
+
+var prototypeShip = Ship.prototype = new createjs.Container();
+
+
+
+prototypeShip.Container_initialize = prototypeShip.initialize;
+
+prototypeShip.initialize = function () {
+    this.Container_initialize();
 };
 
 var browserW = $(window).innerWidth()/2;//window.innerWidth ? window.innerWidth : (document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth);// $(window).innerWidth();
@@ -51,12 +47,11 @@ prototypeShip.update = function (event) {
     //accelerate
     this.vX = Math.cos(angle);
     this.vY = Math.sin(angle);
-    var tempX = prototypeShip.x + this.vX * prototypeShip.speed * deltaTime;
-    var tempY = prototypeShip.y + this.vY * prototypeShip.speed * deltaTime;
+    var tempX = this.x + this.vX * this.speed * deltaTime;
+    var tempY = this.y + this.vY * this.speed * deltaTime;
 
-    prototypeShip.x = (tempX < 2000 && tempX > -2000)? tempX : (tempX < 0? -2000: 2000);
-    prototypeShip.y = (tempY < 2000 && tempY > -2000)? tempY : (tempY < 0? -2000: 2000);
-
+    this.x = (tempX < 2000 && tempX > -2000)? tempX : (tempX < 0? -2000: 2000);
+    this.y = (tempY < 2000 && tempY > -2000)? tempY : (tempY < 0? -2000: 2000);
 };
 
 prototypeShip.addBody = function (pieces) {
@@ -64,5 +59,4 @@ prototypeShip.addBody = function (pieces) {
         var piece = new Piece(pieces[i].type, pieces[i].x, pieces[i].y);
         this.addChild(piece);
     }
-
 };
