@@ -86,5 +86,35 @@
         }
     };
 
+    prototypeShip.addPiece = function (piece, newPiece) {
+        var isFull = true;
+        for (var i = 0; i < piece.aroundPos.length; i++) {
+            if (this.isPosEmpty(piece.aroundPos[i])) {
+                isFull = false;
+                break;
+            }
+        }
+
+        while (!isFull){
+            var pos = piece.aroundPos[Math.round(Math.random() * 6 - 0.5)];
+            if (this.isPosEmpty(pos)) {
+                Global.getInstance().world.children.splice(
+                    Global.getInstance().world.children.indexOf(newPiece),1);
+                newPiece.x = pos.x;
+                newPiece.y = pos.y;
+                newPiece.calculateNewAroundPos();
+                this.addChild(newPiece);
+                this.listPiece.push(newPiece);
+                return true;
+            }
+        };
+    };
+
+    prototypeShip.isPosEmpty = function (pos) {
+        return this.listPiece.filter(function (piece) {
+            return (piece.x === pos.x && piece.y === pos.y);
+        }).length <= 0;
+    };
+
     window.Ship = createjs.promote(Ship, 'Container');
 }());

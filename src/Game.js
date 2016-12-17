@@ -62,7 +62,7 @@ function Game() {
         gameStage.addChild(world);
 
         world.initWorld();
-
+        Global.getInstance().world = world;
         game.resizeToFullWidthCanvas_();
         game.resizeToFullWidthCanvas();
         window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
@@ -99,13 +99,45 @@ function Game() {
     };
 
     //Starting of the game
+    Game.prototype.generatePieces = function() {
+        for (var i = 0; i < 10; i ++) {
+            var typePiece = Math.floor(Math.random() * 5) + 1;
+            var x = (Math.random() - 0.5)*(4000/(Constants.PIECE_WIDTH * Constants.RATIO_X));
+            var y = (Math.random() - 0.5)*(4000/(Constants.PIECE_HEIGHT * Constants.RATIO_Y));
+            var piece;
+            switch (typePiece) {
+                case Constants.COMPONENT_TYPE.CABIN:
+                    piece = new Cabin(typePiece, x, y);
+                    break;
+                case Constants.COMPONENT_TYPE.PROPULSOR:
+                    piece = new Propulsor(typePiece, x, y);
+                    break;
+                case Constants.COMPONENT_TYPE.ARMOR:
+                    piece = new Armor(typePiece, x, y);
+                    break;
+                case Constants.COMPONENT_TYPE.MACHINE_GUN:
+                    piece = new MachineGun(typePiece, x, y);
+                    break;
+                case Constants.COMPONENT_TYPE.CANNON:
+                    piece = new Cannon(typePiece, x, y);
+                    break;
+                default:
+                    piece = new Piece(typePiece, x, y);
+                    break;
+            }
+            world.addChild(piece);
+            Global.getInstance().listPiece.push(piece);
+        }
+    };
+
     Game.prototype.StartGame = function () {
         console.log('game start');
-
+        Global.getInstance().listPiece = [];
         var pieceData = initShipData();
         ship = new Ship(pieceData);
         world.addShip(ship);
 
+        game.generatePieces();
         createjs.Ticker.addEventListener('tick', game.update);
         createjs.Ticker.useRAF = true;
         createjs.Ticker.setFPS(60);
