@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>HTML5 SpaceShip</title>
+        <!--import createjs-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+        <script src="src/Global.js"></script>
+        <script src="src/Constants.js"></script>
+        <script src="src/ContentManager.js"></script>
+        <script src="src/KeyboardHandler.js"></script>
+        <script src="src/MouseHelper.js"></script>
+<<<<<<< .mine
+        <script src="src/Piece.js"></script>
+||||||| .r3
+=======
+        <script src="src/World.js"></script>
+>>>>>>> .r4
+        <script src="src/Ship.js"></script>
+        <script src="src/Game.js"></script>
+        <script>
+            var game = new Game();
+            function init() {
+                game.init();
+            }
+        </script>
+
+        <style type="text/css">
+
+            * { margin:0; padding:0; } /* to remove the top and left whitespace */
+            html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
+            canvas { display:block; } /* To remove the scrollbars */
+            body {
+                background-image: url("img/Background.png");
+                background-repeat: repeat;
+            }
+        </style>
+    </head>
+
+    <body onload="init()">
+        <div class="canvasHolder">
+            <canvas id="gameCanvas" width="0" height="0"></canvas>
+        </div>
+    </body>
+</html>

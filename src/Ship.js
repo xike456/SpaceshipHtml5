@@ -1,10 +1,5 @@
 function Ship(pieces) {
     prototypeShip.initialize(pieces);
-
-    var piece = new Piece();
-    //piece.initialize(pieces[i].type, pieces[i].x, pieces[i].y);
-    console.log(piece);
-    this.addChild(piece);
 };
 
 var prototypeShip = Ship.prototype = new createjs.Container();
@@ -53,11 +48,9 @@ prototypeShip.update = function (event) {
         }
     }
 
-    //console.log(angle* 180 / Math.PI);
     //accelerate
     this.vX = Math.cos(angle);
     this.vY = Math.sin(angle);
-    //console.log(this.vX + ' ' + this.vY);
     var tempX = prototypeShip.x + this.vX * prototypeShip.speed * deltaTime;
     var tempY = prototypeShip.y + this.vY * prototypeShip.speed * deltaTime;
 
@@ -68,6 +61,8 @@ prototypeShip.update = function (event) {
 
 prototypeShip.addBody = function (pieces) {
     for (var i = 0; i < pieces.length; i++) {
-        //this.listPiece.push(piece);
+        var piece = new Piece(pieces[i].type, pieces[i].x, pieces[i].y);
+        this.addChild(piece);
     }
+
 };
