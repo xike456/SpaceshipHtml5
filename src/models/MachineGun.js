@@ -42,6 +42,14 @@
         }
         angle = angle * 180 / (Math.PI) + 90 - this.parent.rotation;
         this.gun.rotation = angle;
+
+        if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_W)) {
+            var posOnShip = this.gun.localToGlobal(this.gun.x + Constants.PIECE_WIDTH / 2, this.gun.y - Constants.PIECE_HEIGHT / 4);
+            var posOnWorld = Global.getInstance().world.globalToLocal(posOnShip.x, posOnShip.y);
+            var bullet = new BulletMachine(posOnWorld.x, posOnWorld.y, angle);
+            Global.getInstance().listBullet.push(bullet);
+            Global.getInstance().world.addChild(bullet);
+        }
     };
 
     window.MachineGun = MachineGun;

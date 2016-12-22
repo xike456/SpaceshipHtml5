@@ -63,6 +63,7 @@ function Game() {
 
         world.initWorld();
         Global.getInstance().world = world;
+        Global.getInstance().listBullet = [];
         game.resizeToFullWidthCanvas_();
         game.resizeToFullWidthCanvas();
         window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
@@ -73,6 +74,9 @@ function Game() {
         kd.D.down(function () {
             Global.getInstance().keyboardHelper.currentKeyDown = kd.D;
         });
+        kd.W.down(function () {
+            Global.getInstance().keyboardHelper.currentKeyDown = kd.W;
+        });
 
         kd.A.up(function () {
             Global.getInstance().keyboardHelper.currentKeyDown = undefined;
@@ -80,6 +84,10 @@ function Game() {
         kd.D.up(function () {
             Global.getInstance().keyboardHelper.currentKeyDown = undefined;
         });
+        kd.W.up(function () {
+            Global.getInstance().keyboardHelper.currentKeyDown = undefined;
+        });
+
         contentManager = new ContentManager(stage, 800, 480);
         contentManager.SetDownloadCompleted(game.StartGame);
         contentManager.StartDownload();
@@ -96,6 +104,9 @@ function Game() {
         ship.update(event);
         world.update(event);
         stage.update();
+        for (var i = 0; i < Global.getInstance().listBullet.length; i++) {
+            Global.getInstance().listBullet[i].update(event);
+        }
     };
 
     //Starting of the game
