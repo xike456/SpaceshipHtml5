@@ -16,46 +16,7 @@
     var browserH = $(window).innerHeight()/2;//window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);//$(window).innerHeight();
 
     prototypeShip.update = function (event) {
-        var deltaTime = event.delta/1000;
-        var mousePos = Global.getInstance().mouseHelper.getMousePos();
-        var lenghX = Math.sqrt((mousePos.x - browserW)*(mousePos.x - browserW) + (mousePos.y - browserH)*(mousePos.y - browserH));
-        var lenghX0 = Math.sqrt((mousePos.x - browserW)*(mousePos.x - browserW));
 
-        var angle = Math.acos(lenghX0/lenghX);
-        if (mousePos.x < browserW) {
-            if (mousePos.y < browserH) {
-                angle = angle +  Math.PI;
-            } else {
-                angle = Math.PI - angle;
-            }
-        } else {
-            if (mousePos.y < browserH) {
-                angle = Math.PI*2 - angle;
-            } else {
-
-            }
-        }
-
-        //accelerate
-        this.vX = Math.cos(angle);
-        this.vY = Math.sin(angle);
-        var tempX = this.x + this.vX * Constants.SHIP_SPEED * deltaTime;
-        var tempY = this.y + this.vY * Constants.SHIP_SPEED * deltaTime;
-
-        this.x = (tempX < 2000 && tempX > -2000)? tempX : (tempX < 0? -2000: 2000);
-        this.y = (tempY < 2000 && tempY > -2000)? tempY : (tempY < 0? -2000: 2000);
-
-        this.listPiece.forEach(function (piece) {
-            piece.update(event);
-        });
-
-        if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_A)) {
-            this.rotation -= Constants.SHIP_ROTATION_SPEED * deltaTime;
-        }
-
-        if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_D)) {
-            this.rotation += Constants.SHIP_ROTATION_SPEED * deltaTime;
-        }
     };
 
     prototypeShip.addBody = function (pieces) {

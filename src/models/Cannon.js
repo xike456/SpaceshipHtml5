@@ -20,35 +20,6 @@
 
     Cannon.prototype.update = function(event) {
         Gun.prototype.update.call(this, event);
-
-        var browserW = $(window).innerWidth()/2;
-        var browserH = $(window).innerHeight()/2;
-
-        var mousePos = Global.getInstance().mouseHelper.getMousePos();
-        var lenghX = Math.sqrt((mousePos.x - browserW)*(mousePos.x - browserW) + (mousePos.y - browserH)*(mousePos.y - browserH));
-        var lenghX0 = Math.sqrt((mousePos.x - browserW)*(mousePos.x - browserW));
-
-        var angle = Math.acos(lenghX0/lenghX);
-        if (mousePos.x < browserW) {
-            if (mousePos.y < browserH) {
-                angle = angle +  Math.PI;
-            } else {
-                angle = Math.PI - angle;
-            }
-        } else {
-            if (mousePos.y < browserH) {
-                angle = Math.PI*2 - angle;
-            } else {
-
-            }
-        }
-        angle = angle * 180 / (Math.PI) + 90 - this.parent.rotation;
-        this.gun.rotation = angle;
-
-        this.fireDelay += event.delta/1000;
-        if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_W)) {
-            this.fire(event);
-        }
     };
 
     Cannon.prototype.fire = function (event) {

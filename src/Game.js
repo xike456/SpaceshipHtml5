@@ -4,7 +4,8 @@ function Game() {
     var contentManager;
     var game;
     var mouseHelper;
-    var ship;
+    var player;
+    var enemy;
     var world;
     var gameStage;
 
@@ -101,7 +102,8 @@ function Game() {
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
         kd.tick();
-        ship.update(event);
+        player.update(event);
+        enemy.update(event);
         world.update(event);
         stage.update();
         for (var i = 0; i < Global.getInstance().listBullet.length; i++) {
@@ -145,8 +147,10 @@ function Game() {
         console.log('game start');
         Global.getInstance().listPiece = [];
         var pieceData = initShipData();
-        ship = new Ship(pieceData);
-        world.addShip(ship);
+        player = new Player(pieceData);
+        enemy = new Ship(pieceData);
+        world.addEnemy(enemy);
+        world.addShip(player);
 
         game.generatePieces();
         createjs.Ticker.addEventListener('tick', game.update);

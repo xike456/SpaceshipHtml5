@@ -33,13 +33,13 @@ var Constants = function () {
 
         SHIP_ROTATION_SPEED: 180,
         SHIP_SPEED: 180,
-        BULLET_CANNON_SPEED: 150,
-        BULLET_MACHINE_SPEED: 150,
+        BULLET_CANNON_SPEED: 550,
+        BULLET_MACHINE_SPEED: 550,
 
         CANNON_FIREPOWER: 880,
         MACHINE_FIREPOWER: 380,
 
         CANNON_FIRE_DELAY: 0.5,
-        MACHINE_FIRE_DELAY: 5,
+        MACHINE_FIRE_DELAY: 0.15,
     };
 }();

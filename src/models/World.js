@@ -12,11 +12,18 @@ prototype.initialize = function () {
     this.Container_initialize();
     this.x = 0;
     this.y = 0;
+
+    this.enemy = [];
 };
 
 prototype.addShip = function (ship) {
     this.ship=ship;
     this.addChild(ship);
+};
+
+prototype.addEnemy = function (enemy) {
+    this.enemy.push(enemy);
+    this.addChild(enemy);
 };
 
 prototype.addWorldGrid = function () {
