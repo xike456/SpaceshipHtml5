@@ -50,6 +50,13 @@ function Game() {
         keyboardHelper = new KeyboardHelper();
         mouseHelper = new MouseHelper(canvas);
         Global.getInstance().listTarget = [];
+
+        // add a text object to output the current FPS:
+        fpsLabel = new createjs.Text("-- fps", "bold 18px Arial", "#FFF");
+        stage.addChild(fpsLabel);
+        fpsLabel.x = 10;
+        fpsLabel.y = 20;
+
         Global.getInstance().stage = stage;
         Global.getInstance().mouseHelper = mouseHelper;
         Global.getInstance().keyboardHelper = keyboardHelper;
@@ -107,13 +114,15 @@ function Game() {
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
         fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
+        fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
+
         kd.tick();
         player.update(event);
         enemy.update(event);
         enemy2.update(event);
         world.update(event);
         stage.update();
-        for (var i = 0; i < Global.getInstance().listBullet.length; i++) {
+        for (var i = Global.getInstance().listBullet.length -1; i >=0; i--) {
             Global.getInstance().listBullet[i].update(event);
         }
     };
