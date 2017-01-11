@@ -13,6 +13,7 @@
         this.addChild(this.gun);
 
         this.fireDelay = Constants.CANNON_FIRE_DELAY;
+        this.shootRange = Constants.CANNON_FIREPOWER;
     }
 
     Cannon.prototype = Object.create(Gun.prototype);

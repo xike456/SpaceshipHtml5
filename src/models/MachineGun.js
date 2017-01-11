@@ -13,6 +13,7 @@
         this.addChild(this.gun);
 
         this.fireDelay = Constants.MACHINE_FIRE_DELAY;
+        this.shootRange = Constants.MACHINE_FIREPOWER;
     }
 
     MachineGun.prototype = Object.create(Gun.prototype);

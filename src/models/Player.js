@@ -17,17 +17,14 @@
         var lenghX0 = Math.sqrt((mousePos.x - browserW)*(mousePos.x - browserW));
 
         //Check enemy in range:
-        var target;
+        Global.getInstance().listTarget = [];
         for (var i = 0; i< Global.getInstance().world.enemy.length; i++) {
             var xe = Global.getInstance().world.enemy[i].x;
             var ye = Global.getInstance().world.enemy[i].y;
 
-            Global.getInstance().eTarget = undefined;
             var distance = Math.sqrt((this.x - xe)*(this.x - xe) + (this.y - ye)*(this.y - ye));
-            if(distance < 700) {
-                Global.getInstance().eTarget = Global.getInstance().world.enemy[i];
-                //console.log(Global.getInstance().world.enemy[i]);
-                break;
+            if(distance < Constants.SHOOT_RANGE) {
+                Global.getInstance().listTarget.push(Global.getInstance().world.enemy[i]);
             }
         }
 

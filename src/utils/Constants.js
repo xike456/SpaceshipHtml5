@@ -41,5 +41,7 @@ var Constants = function () {
 
         CANNON_FIRE_DELAY: 0.5,
         MACHINE_FIRE_DELAY: 0.15,
+
+        SHOOT_RANGE: 1200
     };
 }();

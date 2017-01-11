@@ -6,6 +6,7 @@ function Game() {
     var mouseHelper;
     var player;
     var enemy;
+    var enemy2;
     var world;
     var gameStage;
 
@@ -25,7 +26,7 @@ function Game() {
         gameStage.x = browserW/2;
         gameStage.y = browserH/2;
 
-        var zoom = browserH/900;
+        var zoom = browserH/1300;
         gameStage.scaleX = zoom;
         gameStage.scaleY = zoom;
 
@@ -48,7 +49,7 @@ function Game() {
         stage = new createjs.Stage(canvas);
         keyboardHelper = new KeyboardHelper();
         mouseHelper = new MouseHelper(canvas);
-
+        Global.getInstance().listTarget = [];
         Global.getInstance().stage = stage;
         Global.getInstance().mouseHelper = mouseHelper;
         Global.getInstance().keyboardHelper = keyboardHelper;
@@ -57,6 +58,10 @@ function Game() {
         gameStage = new createjs.Container();
         stage.addChild(gameStage);
 
+        fpsLabel = new createjs.Text("-- fps", "bold 18px Arial", "#FFF");
+        stage.addChild(fpsLabel);
+        fpsLabel.x = 10;
+        fpsLabel.y = 20;
 
         //init world
         world = new World();
@@ -101,9 +106,11 @@ function Game() {
 
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
+        fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
         kd.tick();
         player.update(event);
         enemy.update(event);
+        enemy2.update(event);
         world.update(event);
         stage.update();
         for (var i = 0; i < Global.getInstance().listBullet.length; i++) {
@@ -148,9 +155,19 @@ function Game() {
         Global.getInstance().listPiece = [];
         var pieceData = initShipData();
         player = new Player(pieceData);
+        world.addShip(player);
+
         enemy = new Ship(pieceData);
         world.addEnemy(enemy);
-        world.addShip(player);
+        enemy.x = 400;
+        enemy.y = 300;
+
+
+        enemy2 = new Ship(pieceData);
+        world.addEnemy(enemy2);
+        enemy2.x = -500;
+        enemy2.y = 300;
+
 
         game.generatePieces();
         createjs.Ticker.addEventListener('tick', game.update);

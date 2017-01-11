@@ -1,4 +1,4 @@
-var WORLD_SIZE_PIXEL = 4000;
+var WORLD_SIZE_PIXEL = 20000;
 
 function World() {
     prototype.initialize();
