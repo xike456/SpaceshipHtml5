@@ -4,7 +4,7 @@
 (function () {
     function Gun(piece_type, x ,y) {
         Piece.call(this, piece_type, x ,y);
-
+        this.health = Constants.GUN_HP;
         this.sTarget = undefined;
     }
 
@@ -17,7 +17,7 @@
         this.fireDelay += event.delta / 1000;
 
         if (Global.getInstance().listTarget.length > 0) {
-            var posG = this.gun.localToGlobal(this.gun.x + Constants.PIECE_WIDTH/2, this.gun.y - Constants.PIECE_HEIGHT/4);
+            var posG = this.parent.localToGlobal(this.x, this.y);
             posG = Global.getInstance().world.globalToLocal(posG.x, posG.y);
 
             var distances = [];
@@ -39,19 +39,22 @@
 
             this.sTarget = Global.getInstance().listTarget[minIndex];
             var shooting = false;
+            var pieceIndex = -1;
+            var minRangePiece = -1;
             for (var i = 0; i < this.sTarget.listPiece.length; i++){
                 var piece = this.sTarget.listPiece[i];
-                var posP = piece.localToGlobal(piece.x + Constants.PIECE_WIDTH/2, piece.y - Constants.PIECE_HEIGHT/4);
+                var posP = this.sTarget.localToGlobal(piece.x, piece.y);
                 posP = Global.getInstance().world.globalToLocal(posP.x, posP.y);
-
                 var distance = Math.sqrt((posP.x - posG.x)*(posP.x - posG.x) + (posP.y - posG.y)*(posP.y - posG.y));
-                if(distance <= this.shootRange){
+                if(distance - Constants.PIECE_HEIGHT <= this.shootRange && (minRangePiece > distance || minRangePiece === -1)) {
                     shooting = true;
+                    pieceIndex = i;
+                    minRangePiece = distance;
+                    posE = posP;
                 }
             }
 
-            posE = { x: this.sTarget.x, y: this.sTarget.y };
-            if(shooting) {
+            if(shooting && minRangePiece > Constants.PIECE_HEIGHT) {
                 var angle = Math.atan2(posE.y - posG.y, posE.x - posG.x);
                 angle = angle * 180 / (Math.PI) + 90 - this.parent.rotation;
                 this.gun.rotation = angle;

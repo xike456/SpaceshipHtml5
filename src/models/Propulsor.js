@@ -10,6 +10,8 @@
         bitmap.regX = Constants.PIECE_WIDTH/2;
         bitmap.regY = Constants.PIECE_HEIGHT/2;
         this.addChild(bitmap);
+
+        this.health = Constants.PROPULSOR_HP;
     }
 
     Propulsor.prototype = Object.create(Piece.prototype);

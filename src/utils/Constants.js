@@ -42,6 +42,18 @@ var Constants = function () {
         CANNON_FIRE_DELAY: 0.5,
         MACHINE_FIRE_DELAY: 0.15,
 
-        SHOOT_RANGE: 1200
+        SHOOT_RANGE: 1200,
+
+        //Health point
+        ARMOR_HP: 200,
+        GUN_HP: 120,
+        NORMAL_HP: 125,
+        PROPULSOR_HP: 100,
+        CABIN_HP: 500,
+
+        //Damage
+        MACHINE_DAMAGE: 10,
+        CANNON_DAMAGE: 20,
+
     };
 }();

@@ -13,11 +13,22 @@
         this.x = x * Constants.RATIO_X * Constants.PIECE_WIDTH/2;
         this.y = y * Constants.RATIO_Y * Constants.PIECE_HEIGHT/2;
         this.aroundPos = this.calculateAroundPos(x, y);
+
+        this.health = Constants.NORMAL_HP;
     }
 
     var prototypePiece = createjs.extend(Piece, createjs.Container);
 
     prototypePiece.update = function(event) {
+        if (this.health <= 0) {
+            var posGlobal = this.parent.localToGlobal(this.x, this.y);
+            var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
+            var explosion = new Explosion(posOnWorld.x, posOnWorld.y, true);
+            this.parent.children.splice(this.parent.children.indexOf(this), 1);
+            this.parent.listPiece.splice(this.parent.listPiece.indexOf(this), 1);
+            return;
+        }
+
         for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
             var intersection = ndgmr.checkPixelCollision(this.bitmap, Global.getInstance().listPiece[i].bitmap, 0, true);
             if (intersection) {

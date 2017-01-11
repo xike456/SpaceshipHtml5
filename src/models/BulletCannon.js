@@ -5,16 +5,17 @@
     function BulletCannon(x ,y, angle) {
         Bullet.call(this, x ,y, angle);
 
-        var bitmap = new createjs.Bitmap("img/Bullets/bullet_cannon.png");
-        bitmap.x = 0;
-        bitmap.y = 0;
-        bitmap.scaleX = 0.1;
-        bitmap.scaleY = 0.1;
-        this.addChild(bitmap);
+        this.bitmap = new createjs.Bitmap("img/Bullets/bullet_cannon.png");
+        this.bitmap.x = 0;
+        this.bitmap.y = 0;
+        this.bitmap.scaleX = 0.1;
+        this.bitmap.scaleY = 0.1;
+        this.addChild(this.bitmap);
 
-        this.regX = (bitmap.image.width * bitmap.scaleX) / 2;
-        this.regY = (bitmap.image.height * bitmap.scaleY) / 2;
+        this.regX = (this.bitmap.image.width * this.bitmap.scaleX) / 2;
+        this.regY = (this.bitmap.image.height * this.bitmap.scaleY) / 2;
 
+        this.damage = Constants.CANNON_DAMAGE;
         this.speed = Constants.BULLET_CANNON_SPEED;
         this.firePower = Constants.CANNON_FIREPOWER;
     }

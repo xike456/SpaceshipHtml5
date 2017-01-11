@@ -54,10 +54,6 @@
             this.y = (tempY < 2000 && tempY > -2000)? tempY : (tempY < 0? -2000: 2000);
         }
 
-        this.listPiece.forEach(function (piece) {
-            piece.update(event);
-        });
-
         if (Global.getInstance().keyboardHelper.isKeyDown(Constants.KEYCODE_A)) {
             this.rotation -= Constants.SHIP_ROTATION_SPEED * deltaTime;
         }

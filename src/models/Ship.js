@@ -16,7 +16,9 @@
     var browserH = $(window).innerHeight()/2;//window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);//$(window).innerHeight();
 
     prototypeShip.update = function (event) {
-
+        this.listPiece.forEach(function (piece) {
+            piece.update(event);
+        });
     };
 
     prototypeShip.addBody = function (pieces) {

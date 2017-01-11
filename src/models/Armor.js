@@ -10,7 +10,7 @@
         bitmap.regX = Constants.PIECE_WIDTH/2;
         bitmap.regY = Constants.PIECE_HEIGHT/2;
         this.addChild(bitmap);
-        this.update('test');
+        this.health = Constants.ARMOR_HP;
     }
 
     Armor.prototype = Object.create(Piece.prototype);
