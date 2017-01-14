@@ -14,12 +14,17 @@
         this.y = y * Constants.RATIO_Y * Constants.PIECE_HEIGHT/2;
         this.aroundPos = this.calculateAroundPos(x, y);
 
+        this.regenDelay = 0;
         this.health = Constants.NORMAL_HP;
+        this.maxHealth = Constants.NORMAL_HP;
+        this.type = Constants.COMPONENT_TYPE.BASE;
     }
 
     var prototypePiece = createjs.extend(Piece, createjs.Container);
 
     prototypePiece.update = function(event) {
+        this.regenate(event.delta/1000);
+
         if (this.health <= 0) {
             var posGlobal = this.parent.localToGlobal(this.x, this.y);
             var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
@@ -111,6 +116,15 @@
         });
 
         return listPos;
+    };
+
+    prototypePiece.regenate = function (deltaTime) {
+        if(this.regenDelay <= 0 && this.health < this.maxHealth){
+            this.health += 20 * deltaTime;
+        }
+        else {
+            this.regenDelay -= deltaTime;
+        }
     };
 
     window.Piece = createjs.promote(Piece, 'Container');

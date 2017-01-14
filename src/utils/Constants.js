@@ -33,16 +33,17 @@ var Constants = function () {
 
         SHIP_ROTATION_SPEED: 180,
         SHIP_SPEED: 180,
+        SHIP_MAX_SPEED: 400,
         BULLET_CANNON_SPEED: 550,
         BULLET_MACHINE_SPEED: 550,
 
-        CANNON_FIREPOWER: 880,
+        CANNON_FIREPOWER: 580,
         MACHINE_FIREPOWER: 380,
 
         CANNON_FIRE_DELAY: 0.5,
         MACHINE_FIRE_DELAY: 0.15,
 
-        SHOOT_RANGE: 1200,
+        SHOOT_RANGE: 1500,
 
         //Health point
         ARMOR_HP: 200,
@@ -51,9 +52,16 @@ var Constants = function () {
         PROPULSOR_HP: 100,
         CABIN_HP: 500,
 
+        REGEN_DELAY: 3,
+
         //Damage
-        MACHINE_DAMAGE: 10,
+        MACHINE_DAMAGE: 5,
         CANNON_DAMAGE: 20,
 
+        //Propulsor power
+        PROPULSOR_POWER: 100,
+
+        NUMBER_OF_ENEMY: 10,
+        WORLD_RANGE: 20000
     };
 }();

@@ -1,4 +1,4 @@
-var WORLD_SIZE_PIXEL = 20000;
+var WORLD_SIZE_PIXEL = Constants.WORLD_RANGE;
 
 function World() {
     prototype.initialize();
@@ -55,10 +55,10 @@ prototype.initWorld = function () {
 prototype.makeCameraAroundShip = function (x, y) {
     var browserW = $(window).innerWidth();
     var browserH = $(window).innerHeight();
-    if (this.ship.x > -2000 && this.ship.x < 2000) {
+    if (this.ship.x > -Constants.WORLD_RANGE/2 && this.ship.x < Constants.WORLD_RANGE/2) {
         this.x = -this.ship.x;
     }
-    if (this.ship.y > -2000 && this.ship.y < 2000) {
+    if (this.ship.y > -Constants.WORLD_RANGE/2 && this.ship.y < Constants.WORLD_RANGE/2) {
         this.y = -this.ship.y;
     }
 };

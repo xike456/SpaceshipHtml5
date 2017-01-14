@@ -8,6 +8,9 @@
         this.listPiece = [];
         this.addBody(pieces);
         this.rotation = 0;
+        this.speedPower = 0;
+        this.speed = Constants.SHIP_SPEED;
+        this.maxPower = 0;
     };
 
     var prototypeShip = createjs.extend(Ship, createjs.Container);
@@ -16,9 +19,7 @@
     var browserH = $(window).innerHeight()/2;//window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);//$(window).innerHeight();
 
     prototypeShip.update = function (event) {
-        this.listPiece.forEach(function (piece) {
-            piece.update(event);
-        });
+        this.calculatePower();
     };
 
     prototypeShip.addBody = function (pieces) {
@@ -77,6 +78,43 @@
         return this.listPiece.filter(function (piece) {
             return (piece.x === pos.x && piece.y === pos.y);
         }).length <= 0;
+    };
+
+    prototypeShip.calculatePower = function () {
+        for (var i = 0; i < this.listPiece.length; i++) {
+            if(this.listPiece[i].type === Constants.COMPONENT_TYPE.PROPULSOR){
+                this.maxPower += this.listPiece[i].power;
+            }
+        }
+        if(this.speedPower ===0) {
+            this.speedPower = this.maxPower;
+        }
+    };
+
+    prototypeShip.turboBoost = function (deltatime) {
+        if(this.speedPower <= 0){
+            if(this.speed > Constants.SHIP_SPEED){
+                this.speed -= 50 * deltatime;
+            }
+            console.log("slow down");
+            return;
+        }
+        if(this.speed < Constants.SHIP_MAX_SPEED && this.speedPower > 0) {
+            this.speed += 200 * deltatime;
+            this.speedPower -= 50 * deltatime;
+        }
+        else {
+            this.speedPower -= 50 * deltatime;
+        }
+    };
+
+    prototypeShip.regen = function (deltatime) {
+        if(this.speed > Constants.SHIP_SPEED) {
+            this.speed -= 100 * deltatime;
+        }
+        if(this.speedPower < this.maxPower) {
+            this.speedPower += 50 * deltatime;
+        }
     };
 
     window.Ship = createjs.promote(Ship, 'Container');

@@ -26,7 +26,7 @@ function Game() {
         gameStage.x = browserW/2;
         gameStage.y = browserH/2;
 
-        var zoom = browserH/1300;
+        var zoom = browserH/1600;
         gameStage.scaleX = zoom;
         gameStage.scaleY = zoom;
 
@@ -128,10 +128,10 @@ function Game() {
 
     //Starting of the game
     Game.prototype.generatePieces = function() {
-        for (var i = 0; i < 10; i ++) {
+        for (var i = 0; i < 100; i ++) {
             var typePiece = Math.floor(Math.random() * 5) + 1;
-            var x = (Math.random() - 0.5)*(4000/(Constants.PIECE_WIDTH * Constants.RATIO_X));
-            var y = (Math.random() - 0.5)*(4000/(Constants.PIECE_HEIGHT * Constants.RATIO_Y));
+            var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_WIDTH * Constants.RATIO_X));
+            var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_HEIGHT * Constants.RATIO_Y));
             var piece;
             switch (typePiece) {
                 case Constants.COMPONENT_TYPE.CABIN:
@@ -165,13 +165,13 @@ function Game() {
         player = new Player(pieceData);
         world.addShip(player);
 
-        enemy = new Ship(pieceData);
+        enemy = new Enemy(pieceData);
         world.addEnemy(enemy);
         enemy.x = 300;
         enemy.y = 300;
 
 
-        enemy2 = new Ship(pieceData);
+        enemy2 = new Enemy(pieceData);
         world.addEnemy(enemy2);
         enemy2.x = -500;
         enemy2.y = 300;

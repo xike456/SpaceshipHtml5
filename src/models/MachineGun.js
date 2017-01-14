@@ -14,6 +14,7 @@
 
         this.fireDelay = Constants.MACHINE_FIRE_DELAY;
         this.shootRange = Constants.MACHINE_FIREPOWER;
+        this.type = Constants.COMPONENT_TYPE.MACHINE_GUN;
     }
 
     MachineGun.prototype = Object.create(Gun.prototype);

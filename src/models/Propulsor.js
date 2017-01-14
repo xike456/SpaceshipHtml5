@@ -12,6 +12,9 @@
         this.addChild(bitmap);
 
         this.health = Constants.PROPULSOR_HP;
+        this.maxHealth = Constants.PROPULSOR_HP;
+        this.type = Constants.COMPONENT_TYPE.PROPULSOR;
+        this.power = Constants.PROPULSOR_POWER;
     }
 
     Propulsor.prototype = Object.create(Piece.prototype);

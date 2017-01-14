@@ -46,6 +46,7 @@
                     if (intersection) {
                         var explosion = new Explosion(this.x, this.y);
                         Global.getInstance().listTarget[i].listPiece[j].health -= this.damage;
+                        Global.getInstance().listTarget[i].listPiece[j].regenDelay = Constants.REGEN_DELAY;
                         Global.getInstance().world.children.splice(Global.getInstance().world.children.indexOf(this), 1);
                         //Global.getInstance().listBullet.splice(Global.getInstance().listBullet.indexOf(this), 1);
                         Global.getInstance().listBullet[Global.getInstance().listBullet.indexOf(this)] = undefined;

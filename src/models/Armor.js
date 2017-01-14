@@ -11,6 +11,8 @@
         bitmap.regY = Constants.PIECE_HEIGHT/2;
         this.addChild(bitmap);
         this.health = Constants.ARMOR_HP;
+        this.maxHealth = Constants.ARMOR_HP;
+        this.type = Constants.COMPONENT_TYPE.ARMOR;
     }
 
     Armor.prototype = Object.create(Piece.prototype);

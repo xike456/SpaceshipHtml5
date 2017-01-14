@@ -14,6 +14,7 @@
 
         this.fireDelay = Constants.CANNON_FIRE_DELAY;
         this.shootRange = Constants.CANNON_FIREPOWER;
+        this.type = Constants.COMPONENT_TYPE.CANNON;
     }
 
     Cannon.prototype = Object.create(Gun.prototype);
