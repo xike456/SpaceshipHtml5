@@ -13,7 +13,8 @@
         Ship.prototype.update.call(this, event);
 
         this.listPiece.forEach(function (piece) {
-            piece.update(event);
+            if (piece)
+                piece.update(event);
         });
     };
 

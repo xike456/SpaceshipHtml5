@@ -6,6 +6,7 @@
         this.vX = 0;
         this.vY = 0;
         this.listPiece = [];
+        this.listTarget = [];
         this.addBody(pieces);
         this.rotation = 0;
         this.speedPower = 0;
@@ -19,6 +20,12 @@
     var browserH = $(window).innerHeight()/2;//window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);//$(window).innerHeight();
 
     prototypeShip.update = function (event) {
+
+        for (var i = this.listPiece.length - 1; i >= 0; i--) {
+            if (this.listPiece[i] === undefined) {
+                this.listPiece.splice(i, 1);
+            }
+        }
         this.calculatePower();
     };
 
@@ -114,6 +121,13 @@
         }
         if(this.speedPower < this.maxPower) {
             this.speedPower += 50 * deltatime;
+        }
+    };
+
+    prototypeShip.getMatrixPath = function () {
+        var map = {};
+        for (var i = 0; i < listPiece.length; i++) {
+
         }
     };
 

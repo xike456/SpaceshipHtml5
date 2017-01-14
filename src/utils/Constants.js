@@ -31,11 +31,13 @@ var Constants = function () {
         KEYCODE_D: 68,
         KEYCODE_S: 83,
 
+        //Speed
         SHIP_ROTATION_SPEED: 180,
         SHIP_SPEED: 180,
         SHIP_MAX_SPEED: 400,
         BULLET_CANNON_SPEED: 550,
         BULLET_MACHINE_SPEED: 550,
+        FLOATING_SPEED: 500,
 
         CANNON_FIREPOWER: 580,
         MACHINE_FIREPOWER: 380,
@@ -46,7 +48,7 @@ var Constants = function () {
         SHOOT_RANGE: 1500,
 
         //Health point
-        ARMOR_HP: 200,
+        ARMOR_HP: 300,
         GUN_HP: 120,
         NORMAL_HP: 125,
         PROPULSOR_HP: 100,

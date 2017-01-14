@@ -12,14 +12,14 @@
 
     Player.prototype.scanEnemy = function () {
         //Check enemy in range:
-        Global.getInstance().listTarget = [];
-        for (var i = 0; i< Global.getInstance().world.enemy.length; i++) {
+        this.listTarget = [];
+        for (var i = 0; i < Global.getInstance().world.enemy.length; i++) {
             var xe = Global.getInstance().world.enemy[i].x;
             var ye = Global.getInstance().world.enemy[i].y;
 
             var distance = Math.sqrt((this.x - xe)*(this.x - xe) + (this.y - ye)*(this.y - ye));
             if(distance < Constants.SHOOT_RANGE) {
-                Global.getInstance().listTarget.push(Global.getInstance().world.enemy[i]);
+                this.listTarget.push(Global.getInstance().world.enemy[i]);
             }
         }
     };
@@ -63,7 +63,8 @@
         var deltaTime = event.delta/1000;
 
         this.listPiece.forEach(function (piece) {
-            piece.update(event);
+            if (piece)
+                piece.update(event);
         });
 
         this.scanEnemy();

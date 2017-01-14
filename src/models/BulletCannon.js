@@ -2,8 +2,8 @@
  * Created by mpnguyen on 22/12/2016.
  */
 (function () {
-    function BulletCannon(x ,y, angle) {
-        Bullet.call(this, x ,y, angle);
+    function BulletCannon(x ,y, angle, ship) {
+        Bullet.call(this, x ,y, angle, ship);
 
         this.bitmap = new createjs.Bitmap("img/Bullets/bullet_cannon.png");
         this.bitmap.x = 0;

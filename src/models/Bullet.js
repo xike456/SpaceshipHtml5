@@ -2,7 +2,7 @@
  * Created by mpnguyen on 21/12/2016.
  */
 (function () {
-    function Bullet(x ,y, angle) {
+    function Bullet(x ,y, angle, ship) {
         this.Container_constructor();
 
         this.x0 = x;
@@ -13,6 +13,7 @@
 
         this.angle = angle;
         this.rotation = angle;
+        this.ship = ship;
 
         this.speed = 0;
         this.firePower = 0;
@@ -37,16 +38,16 @@
             Global.getInstance().world.children.splice(Global.getInstance().world.children.indexOf(this), 1);
         }
 
-        if (Global.getInstance().listTarget.length > 0) {
-
-            for (var i = 0; i < Global.getInstance().listTarget.length; i++) {
-                for (var j = 0; j < Global.getInstance().listTarget[i].listPiece.length; j++) {
-                    var piece = Global.getInstance().listTarget[i].listPiece[j];
+        if (this.ship.listTarget.length > 0) {
+            for (var i = 0; i < this.ship.listTarget.length; i++) {
+                for (var j = 0; j < this.ship.listTarget[i].listPiece.length; j++) {
+                    var piece = this.ship.listTarget[i].listPiece[j];
+                    if (!piece) break;
                     var intersection = ndgmr.checkPixelCollision(this.bitmap, piece.bitmap, 0, true);
                     if (intersection) {
                         var explosion = new Explosion(this.x, this.y);
-                        Global.getInstance().listTarget[i].listPiece[j].health -= this.damage;
-                        Global.getInstance().listTarget[i].listPiece[j].regenDelay = Constants.REGEN_DELAY;
+                        this.ship.listTarget[i].listPiece[j].health -= this.damage;
+                        this.ship.listTarget[i].listPiece[j].regenDelay = Constants.REGEN_DELAY;
                         Global.getInstance().world.children.splice(Global.getInstance().world.children.indexOf(this), 1);
                         //Global.getInstance().listBullet.splice(Global.getInstance().listBullet.indexOf(this), 1);
                         Global.getInstance().listBullet[Global.getInstance().listBullet.indexOf(this)] = undefined;

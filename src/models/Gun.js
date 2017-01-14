@@ -16,14 +16,14 @@
 
         this.fireDelay += event.delta / 1000;
 
-        if (Global.getInstance().listTarget.length > 0) {
+        if (this.parent.listTarget && this.parent.listTarget.length > 0) {
             var posG = this.parent.localToGlobal(this.x, this.y);
             posG = Global.getInstance().world.globalToLocal(posG.x, posG.y);
 
             var distances = [];
             var posE;
-            for (var i = 0; i < Global.getInstance().listTarget.length; i++) {
-                posE = { x: Global.getInstance().listTarget[i].x, y: Global.getInstance().listTarget[i].y };
+            for (var i = 0; i < this.parent.listTarget.length; i++) {
+                posE = { x: this.parent.listTarget[i].x, y: this.parent.listTarget[i].y };
                 var distance = Math.sqrt((posE.x - posG.x)*(posE.x - posG.x) + (posE.y - posG.y)*(posE.y - posG.y));
                 distances.push(distance);
             }
@@ -37,12 +37,13 @@
                 }
             }
 
-            this.sTarget = Global.getInstance().listTarget[minIndex];
+            this.sTarget = this.parent.listTarget[minIndex];
             var shooting = false;
             var pieceIndex = -1;
             var minRangePiece = -1;
             for (var i = 0; i < this.sTarget.listPiece.length; i++){
                 var piece = this.sTarget.listPiece[i];
+                if (!piece) break;
                 var posP = this.sTarget.localToGlobal(piece.x, piece.y);
                 posP = Global.getInstance().world.globalToLocal(posP.x, posP.y);
                 var distance = Math.sqrt((posP.x - posG.x)*(posP.x - posG.x) + (posP.y - posG.y)*(posP.y - posG.y));

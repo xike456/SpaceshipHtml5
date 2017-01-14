@@ -65,4 +65,7 @@ prototype.makeCameraAroundShip = function (x, y) {
 
 prototype.update = function (event) {
      this.makeCameraAroundShip();
+     for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
+         Global.getInstance().listPiece[i].update(event);
+     }
 };

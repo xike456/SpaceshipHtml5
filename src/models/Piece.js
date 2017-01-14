@@ -12,6 +12,10 @@
         this.addChild(this.bitmap);
         this.x = x * Constants.RATIO_X * Constants.PIECE_WIDTH/2;
         this.y = y * Constants.RATIO_Y * Constants.PIECE_HEIGHT/2;
+        this.vX = 0;
+        this.vY = 0;
+        this.speed = 0;
+        this.canCollect = true;
         this.aroundPos = this.calculateAroundPos(x, y);
 
         this.regenDelay = 0;
@@ -22,21 +26,58 @@
 
     var prototypePiece = createjs.extend(Piece, createjs.Container);
 
+    prototypePiece.clone = function () {
+        return new Piece('', this.x, this.y);
+    };
+
     prototypePiece.update = function(event) {
+
+        if (this.speed > 0) {
+            this.x -= this.vX * this.speed * event.delta/1000;
+            this.y += this.vY * this.speed * event.delta/1000;
+            this.speed -= Constants.FLOATING_SPEED * event.delta/1000;
+            if (this.speed <= 0) {
+                this.canCollect = true;
+            }
+            return;
+        }
+
+        if (this.parent === Global.getInstance().world) {
+            return;
+        }
+
         this.regenate(event.delta/1000);
 
         if (this.health <= 0) {
             var posGlobal = this.parent.localToGlobal(this.x, this.y);
             var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
             var explosion = new Explosion(posOnWorld.x, posOnWorld.y, true);
+            var posParent = { x: this.parent.x, y: this.parent.y };
+            var rotationParent = this.parent.rotation;
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
-            this.parent.listPiece.splice(this.parent.listPiece.indexOf(this), 1);
+            this.parent.listPiece[this.parent.listPiece.indexOf(this)] = undefined;
+
+            if (Math.random() < 0.5 && this.type !== Constants.COMPONENT_TYPE.CABIN) {
+                this.canCollect = false;
+                this.x = posOnWorld.x;
+                this.y = posOnWorld.y;
+                var angle = Math.atan2(this.x - posParent.x, this.y - posParent.y);
+                angle = angle * 180 / (Math.PI) + 90 - rotationParent + (Math.random()/2 - 1) * 60;
+                angle = angle * Math.PI / 180;
+                var velocity = { vX: Math.cos(angle), vY: Math.sin(angle) };
+                this.vX = velocity.vX;
+                this.vY = velocity.vY;
+                this.speed = Constants.FLOATING_SPEED;
+                this.health = this.maxHealth;
+                Global.getInstance().world.addChild(this);
+                Global.getInstance().listPiece.push(this);
+            }
             return;
         }
 
         for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
             var intersection = ndgmr.checkPixelCollision(this.bitmap, Global.getInstance().listPiece[i].bitmap, 0, true);
-            if (intersection) {
+            if (intersection && Global.getInstance().listPiece[i].canCollect) {
                 var result = this.parent.addPiece(this, Global.getInstance().listPiece[i]);
                 if (result) {
                     Global.getInstance().listPiece.splice(i, 1);
