@@ -12,6 +12,8 @@
         this.speedPower = 0;
         this.speed = Constants.SHIP_SPEED;
         this.maxPower = 0;
+        this.matrixPath = undefined;
+        this.mainIndex = 0;
     };
 
     var prototypeShip = createjs.extend(Ship, createjs.Container);
@@ -55,6 +57,7 @@
             this.addChild(piece);
             this.listPiece.push(piece);
         }
+        this.getMatrixPath();
     };
 
     prototypeShip.addPiece = function (piece, newPiece) {
@@ -125,10 +128,50 @@
     };
 
     prototypeShip.getMatrixPath = function () {
-        var map = {};
-        for (var i = 0; i < listPiece.length; i++) {
-
+        var map = new Array(this.listPiece.length);
+        for (var i = 0; i < this.listPiece.length; i++) {
+            map[i] = new Array(this.listPiece.length);
         }
+        this.mainIndex = -1;
+        for (var i = 0; i < this.listPiece.length; i++) {
+            if (this.listPiece[i] && this.listPiece[i].type === Constants.COMPONENT_TYPE.CABIN) {
+                this.mainIndex = i;
+            }
+            for (var j = i; j < this.listPiece.length; j++) {
+                map[i][j] = 0;
+                map[j][i] = 0;
+                if (!this.listPiece[i] || !this.listPiece[j]) continue;
+                if (Utils.getDistanceBetweenTwoPoints(this.listPiece[i].x, this.listPiece[i].y, this.listPiece[j].x, this.listPiece[j].y)
+                    < Constants.PIECE_HEIGHT + Constants.PIECE_HEIGHT/4) {
+                    map[i][j] = 1;
+                    map[j][i] = 1;
+                }
+            }
+        }
+
+        this.matrixPath = map;
+    };
+
+    prototypeShip.getPath = function (n, m) {
+        if (this.mainIndex == -1)
+            return false;
+        var map = this.matrixPath;
+        if (!map) return;
+        var mark = new Array(this.listPiece.length);
+        var quence = [];
+        quence.push(n);
+        while (quence.length > 0) {
+            var index = quence.pop();
+            mark[index] = true;
+            for (var i = 0; i< this.listPiece.length; i++) {
+                if (map[index][i] === 1 && !mark[i]) {
+                    if (i === m)
+                        return true;
+                    quence.push(i);
+                }
+            }
+        }
+        return false;
     };
 
     window.Ship = createjs.promote(Ship, 'Container');

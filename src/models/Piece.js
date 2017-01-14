@@ -54,6 +54,8 @@
             var explosion = new Explosion(posOnWorld.x, posOnWorld.y, true);
             var posParent = { x: this.parent.x, y: this.parent.y };
             var rotationParent = this.parent.rotation;
+            var parent = this.parent;
+
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent.listPiece[this.parent.listPiece.indexOf(this)] = undefined;
 
@@ -62,7 +64,7 @@
                 this.x = posOnWorld.x;
                 this.y = posOnWorld.y;
                 var angle = Math.atan2(this.x - posParent.x, this.y - posParent.y);
-                angle = angle * 180 / (Math.PI) + 90 - rotationParent + (Math.random()/2 - 1) * 60;
+                angle = angle * 180 / (Math.PI) + 90 - rotationParent + ((Math.random()/2 - 0.5) * 60);
                 angle = angle * Math.PI / 180;
                 var velocity = { vX: Math.cos(angle), vY: Math.sin(angle) };
                 this.vX = velocity.vX;
@@ -71,6 +73,31 @@
                 this.health = this.maxHealth;
                 Global.getInstance().world.addChild(this);
                 Global.getInstance().listPiece.push(this);
+            }
+            parent.getMatrixPath();
+            for (var i = 0; i < parent.listPiece.length; i++) {
+                if (!parent.listPiece[i]) continue;
+                if (i != parent.mainIndex && !parent.getPath(i, parent.mainIndex)) {
+                    var piece = parent.listPiece[i];
+                    parent.children.splice(parent.children.indexOf(piece), 1);
+                    parent.listPiece[parent.listPiece.indexOf(piece)] = undefined;
+
+                    piece.canCollect = false;
+                    posGlobal = parent.localToGlobal(piece.x, piece.y);
+                    posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
+                    piece.x = posOnWorld.x;
+                    piece.y = posOnWorld.y;
+                    var angle = Math.atan2(piece.x - posParent.x, piece.y - posParent.y);
+                    angle = angle * 180 / (Math.PI) + 90 - rotationParent + (Math.random()/2 - 1) * 60;
+                    angle = angle * Math.PI / 180;
+                    var velocity = { vX: Math.cos(angle), vY: Math.sin(angle) };
+                    piece.vX = velocity.vX;
+                    piece.vY = velocity.vY;
+                    piece.speed = Constants.FLOATING_SPEED;
+                    piece.health = piece.maxHealth;
+                    Global.getInstance().world.addChild(piece);
+                    Global.getInstance().listPiece.push(piece);
+                }
             }
             return;
         }
