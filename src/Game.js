@@ -11,6 +11,8 @@ function Game() {
     var msLabel;
     var fpsLabel;
     var clickToStart;
+    var effect;
+    var sound;
 
     if(game === undefined || game === null) {
         game = this;
@@ -74,6 +76,7 @@ function Game() {
         stage.addChild(gameStage);
 
         sound = new createjs.Text("Music: On", "bold 18px Arial", "#FFF");
+        sound.text = Global.getInstance().isPlayBackgroundSound? 'Music: On' : 'Music: Off';
         stage.addChild(sound);
         sound.x = browserW - 100;
         sound.y = 20;
@@ -85,6 +88,7 @@ function Game() {
         });
 
         effect = new createjs.Text("Sound: On", "bold 18px Arial", "#FFF");
+        effect.text = Global.getInstance().isPlayEffectSound? 'Sound: On' : 'Sound: Off';
         stage.addChild(effect);
         effect.x = browserW - 100;
         effect.y = 50;
@@ -242,6 +246,7 @@ function Game() {
     Game.prototype.restartGame = function () {
         var browserW = $(window).width();
         var browserH = $(window).height();
+
         var clickToRestart = new createjs.Text('Click To Replay!', 'bold 24px Arial', '#FFF');
         clickToRestart.x = (browserW/2) - 100;
         clickToRestart.y = browserH/2;
@@ -266,25 +271,16 @@ function Game() {
             stage.addChild(gameStage);
 
             sound = new createjs.Text("Music: On", "bold 18px Arial", "#FFF");
+            sound.text = Global.getInstance().isPlayBackgroundSound? 'Music: On' : 'Music: Off';
             stage.addChild(sound);
             sound.x = browserW - 100;
             sound.y = 20;
-            sound.on('click', function () {
-                Global.getInstance().isPlayBackgroundSound = !Global.getInstance().isPlayBackgroundSound;
-                sound.text = Global.getInstance().isPlayBackgroundSound? 'Music: On' : 'Music: Off';
-                Utils.playSound(Constants.SOUND.BACKGROUND);
-                stage.update();
-            });
 
             effect = new createjs.Text("Sound: On", "bold 18px Arial", "#FFF");
+            effect.text = Global.getInstance().isPlayEffectSound? 'Sound: On' : 'Sound: Off';
             stage.addChild(effect);
             effect.x = browserW - 100;
             effect.y = 50;
-            effect.on('click', function () {
-                Global.getInstance().isPlayEffectSound = !Global.getInstance().isPlayEffectSound;
-                effect.text = Global.getInstance().isPlayEffectSound? 'Sound: On' : 'Sound: Off';
-                stage.update();
-            });
 
             //FPS indicator
             fpsLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
@@ -372,17 +368,6 @@ function Game() {
             createjs.Ticker.useRAF = true;
             createjs.Ticker.setFPS(60);
         });
-
-        // Global.getInstance().listPiece = [];
-        // var pieceData = initShipData();
-        // player = new Player(pieceData);
-        // game.zoomScreen(player.listPiece.length);
-        // world.addShip(player);
-        // Global.getInstance().player = player;
-        // Utils.playSound(Constants.SOUND.BACKGROUND);
-        // createjs.Ticker.addEventListener('tick', game.update);
-        // createjs.Ticker.useRAF = true;
-        // createjs.Ticker.setFPS(60);
     };
 
     function initShipData() {
