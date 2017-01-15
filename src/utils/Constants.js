@@ -39,7 +39,7 @@ var Constants = function () {
         SHIP_SPEED: 180,
         SHIP_MAX_SPEED: 400,
         BULLET_CANNON_SPEED: 550,
-        BULLET_MACHINE_SPEED: 550,
+        BULLET_MACHINE_SPEED: 750,
         FLOATING_SPEED: 500,
 
         CANNON_FIREPOWER: 580,
