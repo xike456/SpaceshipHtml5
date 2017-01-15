@@ -140,11 +140,14 @@
                     Global.getInstance().world.removeChild(bomb);
                     var explosion = new Explosion(bomb.x, bomb.y, true);
                     for (var j = 0; j < this.parent.listPiece.length; j++) {
-                        if (!this.parent.listPiece[i]) continue;
-                        var piece = this.parent.listPiece[i];
+                        if (!this.parent.listPiece[j]) continue;
+                        var piece = this.parent.listPiece[j];
                         var posGlobal = this.parent.localToGlobal(piece.x, piece.y);
                         var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
-                        piece.health -= (Constants.BOMB_DAMAGE - Utils.getDistanceBetweenTwoPoints(posOnWorld.x, posOnWorld.y, bomb.x, bomb.y));
+                        if (Constants.BOMB_DAMAGE >= Utils.getDistanceBetweenTwoPoints(posOnWorld.x, posOnWorld.y, bomb.x, bomb.y)) {
+                            piece.health -= (Constants.BOMB_DAMAGE - Utils.getDistanceBetweenTwoPoints(posOnWorld.x, posOnWorld.y, bomb.x, bomb.y));
+                        }
+
                         piece.regenDelay = 3;
                     }
                 }

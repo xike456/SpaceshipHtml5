@@ -10,8 +10,8 @@ var Global = function () {
         getInstance: function () {
         if(!instance){
             instance = createInstance();
-            instance.isPlayBackgroundSound = false;
-            instance.isPlayEffectSound = false;
+            instance.isPlayBackgroundSound = true;
+            instance.isPlayEffectSound = true;
         }
         return instance;
     }}
