@@ -128,21 +128,27 @@
                     }
                 }
             }
-        }
 
-        for (var i = 0; i < this.parent.bombInRange.length; i++) {
-            if (!this.parent.bombInRange[i]) continue;
-            var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.bombInRange[i].bomb, 0, true);
-            if (intersection) {
-                var bomb = this.parent.bombInRange[i];
-                this.parent.bombInRange.splice(i, 1);
-                Global.getInstance().world.listBomb.splice(Global.getInstance().world.listBomb.indexOf(bomb), 1);
-                Global.getInstance().world.removeChild(bomb);
-                var explosion = new Explosion(bomb.x, bomb.y, true);
-                this.parent.listPiece[(this.parent.listPiece.indexOf(this))] = undefined;
-                this.parent.removeChild(this);
+        if (this.parent.bombInRange)
+            for (var i = 0; i < this.parent.bombInRange.length; i++) {
+                if (!this.parent.bombInRange[i]) continue;
+                var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.bombInRange[i].bomb, 0, true);
+                if (intersection) {
+                    var bomb = this.parent.bombInRange[i];
+                    //this.parent.bombInRange.splice(i, 1);
+                    Global.getInstance().world.listBomb.splice(Global.getInstance().world.listBomb.indexOf(bomb), 1);
+                    Global.getInstance().world.removeChild(bomb);
+                    var explosion = new Explosion(bomb.x, bomb.y, true);
+                    for (var j = 0; j < this.parent.listPiece.length; j++) {
+                        if (!this.parent.listPiece[i]) continue;
+                        var piece = this.parent.listPiece[i];
+                        var posGlobal = this.parent.localToGlobal(piece.x, piece.y);
+                        var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
+                        piece.health -= (Constants.BOMB_DAMAGE - Utils.getDistanceBetweenTwoPoints(posOnWorld.x, posOnWorld.y, bomb.x, bomb.y));
+                        piece.regenDelay = 3;
+                    }
+                }
             }
-        }
     };
 
     prototypePiece.calculateNewAroundPos = function () {

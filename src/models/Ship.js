@@ -98,7 +98,6 @@
                 this.listPiece.push(newPiece);
                 if(this === Global.getInstance().player) {
                     Global.getInstance().game.zoomScreen(this.listPiece.length);
-                    console.log("resize");
                 }
                 this.shootRange += 30;
                 return true;
@@ -128,7 +127,9 @@
 
     prototypeShip.isPosEmpty = function (pos) {
         return this.listPiece.filter(function (piece) {
-            return (piece.x === pos.x && piece.y === pos.y);
+            if (piece)
+                return (piece.x === pos.x && piece.y === pos.y);
+            return false;
         }).length <= 0;
     };
 

@@ -18,7 +18,7 @@ prototype.initialize = function () {
 };
 
 prototype.botController = function (event) {
-    while(this.enemy.length < 20){
+    while(this.enemy.length < 5){
         var e = new Enemy(Utils.initShipData(Global.getInstance().player.listPiece.length));
         this.addEnemy(e);
 
