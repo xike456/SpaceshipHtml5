@@ -242,8 +242,8 @@ function Game() {
     Game.prototype.restartGame = function () {
         var browserW = $(window).width();
         var browserH = $(window).height();
-        var clickToRestart = new createjs.Text('Click To Replay!', 'bold 14px Arial', '#FFF');
-        clickToRestart.x = (browserW/2) - 80;
+        var clickToRestart = new createjs.Text('Click To Replay!', 'bold 24px Arial', '#FFF');
+        clickToRestart.x = (browserW/2) - 100;
         clickToRestart.y = browserH/2;
         stage.addChild(clickToRestart);
         var canvas = document.getElementById('gameCanvas');
