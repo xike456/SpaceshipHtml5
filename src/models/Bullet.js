@@ -43,7 +43,7 @@
             for (var i = 0; i < this.ship.listTarget.length; i++) {
                 for (var j = 0; j < this.ship.listTarget[i].listPiece.length; j++) {
                     var piece = this.ship.listTarget[i].listPiece[j];
-                    if (!piece) break;
+                    if (!piece|| !this) continue;
                     var intersection = ndgmr.checkPixelCollision(this.bitmap, piece.bitmap, 0, true);
                     if (intersection) {
                         var explosion = new Explosion(this.x, this.y);

@@ -18,24 +18,35 @@ prototype.initialize = function () {
 };
 
 prototype.botController = function (event) {
-    while(this.enemy.length < 5){
+    while(this.enemy.length < 10){
         var e = new Enemy(Utils.initShipData(Global.getInstance().player.listPiece.length));
         this.addEnemy(e);
 
-        e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
-        e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
+        e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+        e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+        while(Utils.getDistanceBetweenTwoPoints(e.x, e.y, Global.getInstance().player.x, Global.getInstance().player.y)< 1500) {
+            e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+            e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+        }
     }
 
     for (var i = 0; i < this.enemy.length; i++){
         if(!this.enemy[i]){
             var e = new Enemy(Utils.initShipData(Global.getInstance().player.listPiece.length));
             this.enemy[i] = e;
+            this.addEnemy(e);
+            e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+            e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
 
-            e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
-            e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
+            while(Utils.getDistanceBetweenTwoPoints(e.x, e.y, Global.getInstance().player.x, Global.getInstance().player.y)< 1500) {
+                e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+                e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE);
+            }
+
         }
-
-        this.enemy[i].update(event);
+        if(this.enemy[i]) {
+            this.enemy[i].update(event);
+        }
     }
 };
 

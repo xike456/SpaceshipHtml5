@@ -42,7 +42,7 @@
             return;
         }
 
-        if (this.parent === Global.getInstance().world) {
+        if (this.parent === Global.getInstance().world || !this.parent) {
             return;
         }
 
@@ -83,6 +83,10 @@
 
             //check if still connect to cabin
             parent.getMatrixPath();
+            if(this.parent.mainIndex === -1) {
+                if(Global.getInstance().world.enemy.indexOf(parent))
+                    Global.getInstance().world.enemy[Global.getInstance().world.enemy.indexOf(parent)] = undefined;
+            }
             for (var i = 0; i < parent.listPiece.length; i++) {
                 if (!parent.listPiece[i]) continue;
                 if (i != parent.mainIndex && !parent.getPath(i, parent.mainIndex)) {
@@ -107,16 +111,13 @@
                     Global.getInstance().listPiece.push(piece);
                 }
             }
-            if(parent.mainIndex === -1) {
-                if(Global.getInstance().world.enemy.indexOf(parent))
-                    Global.getInstance().world.enemy[Global.getInstance().world.enemy.indexOf(parent)] = undefined;
-            }
             if(parent === Global.getInstance().player)
-                //Global.getInstance().game.zoomScreen(Global.getInstance().player.listPiece.length);
+                Global.getInstance().game.zoomScreen(Global.getInstance().player.listPiece.length);
             return;
         }
         if(this.parent.pieceInRange)
             for (var i = 0; i < this.parent.pieceInRange.length; i++) {
+                if (!this.parent.pieceInRange[i] && !this) continue;
                 var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.pieceInRange[i].bitmap, 0, true);
                 if (intersection && this.parent.pieceInRange[i].canCollect) {
                     var piece = this.parent.pieceInRange[i];
@@ -131,7 +132,7 @@
 
         if (this.parent.bombInRange)
             for (var i = 0; i < this.parent.bombInRange.length; i++) {
-                if (!this.parent.bombInRange[i]) continue;
+                if (!this.parent.bombInRange[i] && !this) continue;
                 var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.bombInRange[i].bomb, 0, true);
                 if (intersection) {
                     var bomb = this.parent.bombInRange[i];

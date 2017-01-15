@@ -36,8 +36,8 @@ var Constants = function () {
 
         //Speed
         SHIP_ROTATION_SPEED: 180,
-        SHIP_SPEED: 180,
-        SHIP_MAX_SPEED: 400,
+        SHIP_SPEED: 200,
+        SHIP_MAX_SPEED: 500,
         BULLET_CANNON_SPEED: 550,
         BULLET_MACHINE_SPEED: 750,
         FLOATING_SPEED: 500,
@@ -48,7 +48,7 @@ var Constants = function () {
         CANNON_FIRE_DELAY: 1,
         MACHINE_FIRE_DELAY: 0.15,
 
-        SHOOT_RANGE: 1000,
+        SHOOT_RANGE: 1300,
 
         //Health point
         ARMOR_HP: 300,
@@ -68,7 +68,7 @@ var Constants = function () {
         PROPULSOR_POWER: 100,
 
         NUMBER_OF_ENEMY: 10,
-        WORLD_RANGE: 20000,
+        WORLD_RANGE: 6000,
 
         SOUND: {
             PIECE_BREAK: 'break',
