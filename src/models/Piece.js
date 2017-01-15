@@ -31,7 +31,7 @@
     };
 
     prototypePiece.update = function(event) {
-
+        //floating on world if break from ship
         if (this.speed > 0) {
             this.x -= this.vX * this.speed * event.delta/1000;
             this.y += this.vY * this.speed * event.delta/1000;
@@ -46,8 +46,9 @@
             return;
         }
 
+        //regen health if not being attacked
         this.regenate(event.delta/1000);
-
+        //check when health < 0, broken
         if (this.health <= 0) {
             var posGlobal = this.parent.localToGlobal(this.x, this.y);
             var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
@@ -58,7 +59,7 @@
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent.listPiece[this.parent.listPiece.indexOf(this)] = undefined;
-
+            //break from ship or destroyed
             if (Math.random() < 0.5 && this.type !== Constants.COMPONENT_TYPE.CABIN) {
                 this.canCollect = false;
                 this.x = posOnWorld.x;
@@ -74,6 +75,8 @@
                 Global.getInstance().world.addChild(this);
                 Global.getInstance().listPiece.push(this);
             }
+
+            //check if still connect to cabin
             parent.getMatrixPath();
             for (var i = 0; i < parent.listPiece.length; i++) {
                 if (!parent.listPiece[i]) continue;
@@ -99,15 +102,23 @@
                     Global.getInstance().listPiece.push(piece);
                 }
             }
+            if(parent.mainIndex === -1) {
+                if(Global.getInstance().world.enemy.indexOf(parent))
+                    Global.getInstance().world.enemy[Global.getInstance().world.enemy.indexOf(parent)] = undefined;
+            }
+            if(parent === Global.getInstance().player)
+                //Global.getInstance().game.zoomScreen(Global.getInstance().player.listPiece.length);
             return;
         }
 
-        for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
-            var intersection = ndgmr.checkPixelCollision(this.bitmap, Global.getInstance().listPiece[i].bitmap, 0, true);
-            if (intersection && Global.getInstance().listPiece[i].canCollect) {
-                var result = this.parent.addPiece(this, Global.getInstance().listPiece[i]);
+        for (var i = 0; i < this.parent.pieceInRange.length; i++) {
+            var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.pieceInRange[i].bitmap, 0, true);
+            if (intersection && this.parent.pieceInRange[i].canCollect) {
+                var piece = this.parent.pieceInRange[i];
+                this.parent.pieceInRange.splice(i, 1);
+                var result = this.parent.addPiece(this, piece);
                 if (result) {
-                    Global.getInstance().listPiece.splice(i, 1);
+                    Global.getInstance().listPiece.splice(Global.getInstance().listPiece.indexOf(piece), 1);
                     break;
                 }
             }

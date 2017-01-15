@@ -14,6 +14,9 @@
         //Check enemy in range:
         this.listTarget = [];
         for (var i = 0; i < Global.getInstance().world.enemy.length; i++) {
+            if(!Global.getInstance().world.enemy[i]) {
+                break;
+            }
             var xe = Global.getInstance().world.enemy[i].x;
             var ye = Global.getInstance().world.enemy[i].y;
 
@@ -50,7 +53,6 @@
         this.vY = Math.sin(angle);
         var tempX = this.x + this.vX * this.speed * deltaTime;
         var tempY = this.y + this.vY * this.speed * deltaTime;
-
 
         if (lenghX > Constants.PIECE_WIDTH/2) {
             this.x = (tempX < Constants.WORLD_RANGE/2 && tempX > -Constants.WORLD_RANGE/2)? tempX : (tempX < 0? -Constants.WORLD_RANGE/2 : Constants.WORLD_RANGE/2);

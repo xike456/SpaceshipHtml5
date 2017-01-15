@@ -16,6 +16,28 @@ prototype.initialize = function () {
     this.enemy = [];
 };
 
+prototype.botController = function (event) {
+    while(this.enemy.length < 10){
+        var e = new Enemy(Utils.initShipData());
+        this.addEnemy(e);
+
+        e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
+        e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
+    }
+
+    for (var i = 0; i < this.enemy.length; i++){
+        if(!this.enemy[i]){
+            var e = new Enemy(Utils.initShipData());
+            this.enemy[i] = e;
+
+            e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
+            e.y = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
+        }
+
+        this.enemy[i].update(event);
+    }
+};
+
 prototype.addShip = function (ship) {
     this.ship=ship;
     this.addChild(ship);
@@ -64,8 +86,9 @@ prototype.makeCameraAroundShip = function (x, y) {
 };
 
 prototype.update = function (event) {
-     this.makeCameraAroundShip();
-     for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
-         Global.getInstance().listPiece[i].update(event);
-     }
+    this.makeCameraAroundShip();
+    this.botController(event);
+    for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
+        Global.getInstance().listPiece[i].update(event);
+    }
 };

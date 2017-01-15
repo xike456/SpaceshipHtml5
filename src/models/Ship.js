@@ -10,10 +10,12 @@
         this.addBody(pieces);
         this.rotation = 0;
         this.speedPower = 0;
+        this.shootRange = Constants.SHOOT_RANGE;
         this.speed = Constants.SHIP_SPEED;
         this.maxPower = 0;
         this.matrixPath = undefined;
         this.mainIndex = 0;
+        this.pieceInRange = [];
     };
 
     var prototypeShip = createjs.extend(Ship, createjs.Container);
@@ -22,7 +24,7 @@
     var browserH = $(window).innerHeight()/2;//window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);//$(window).innerHeight();
 
     prototypeShip.update = function (event) {
-
+        this.scanPiece();
         for (var i = this.listPiece.length - 1; i >= 0; i--) {
             if (this.listPiece[i] === undefined) {
                 this.listPiece.splice(i, 1);
@@ -79,9 +81,24 @@
                 newPiece.calculateNewAroundPos();
                 this.addChild(newPiece);
                 this.listPiece.push(newPiece);
+                if(this === Global.getInstance().player) {
+                    Global.getInstance().game.zoomScreen(this.listPiece.length);
+                    console.log("resize");
+                }
+                this.shootRange += 30;
                 return true;
             }
         };
+    };
+
+    prototypeShip.scanPiece = function () {
+        this.pieceInRange = [];
+        for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
+            if(Utils.getDistanceBetweenTwoPoints(this.x, this.y,
+                    Global.getInstance().listPiece[i].x, Global.getInstance().listPiece[i].y) < Constants.SHOOT_RANGE){
+                this.pieceInRange.push(Global.getInstance().listPiece[i]);
+            }
+        }
     };
 
     prototypeShip.isPosEmpty = function (pos) {

@@ -5,8 +5,6 @@ function Game() {
     var game;
     var mouseHelper;
     var player;
-    var enemy;
-    var enemy2;
     var world;
     var gameStage;
 
@@ -18,23 +16,32 @@ function Game() {
         var browserW = $(window).width();
         var browserH = $(window).height();
 
-        console.log('Width: ' + browserW + '  Height: ' + browserH);
-
         stage.canvas.width = browserW;
         stage.canvas.height = browserH;
 
         gameStage.x = browserW/2;
         gameStage.y = browserH/2;
 
-        var zoom = browserH/1600;
-        gameStage.scaleX = zoom;
-        gameStage.scaleY = zoom;
+        game.zoomScreen();
 
         gameStage.calcLocalPosition = function (stageX, stageY){
             x = (stageX - this.x) / this.scaleX;
             y = (stageY - this.y) / this.scaleY;
             return {"x":x, "y":y};
         };
+    };
+
+    Game.prototype.zoomScreen = function (pieceSize) {
+        if(!pieceSize){
+            pieceSize = 5;
+        }
+
+        var browserW = $(window).width();
+        var browserH = $(window).height();
+
+        var zoom = browserH/(1000 + pieceSize * 5);
+        gameStage.scaleX = zoom;
+        gameStage.scaleY = zoom;
     };
 
     var resizeTimeout = null;
@@ -50,7 +57,7 @@ function Game() {
         keyboardHelper = new KeyboardHelper();
         mouseHelper = new MouseHelper(canvas);
         Global.getInstance().listTarget = [];
-
+        Global.getInstance().game = game;
         Global.getInstance().stage = stage;
         Global.getInstance().mouseHelper = mouseHelper;
         Global.getInstance().keyboardHelper = keyboardHelper;
@@ -108,11 +115,10 @@ function Game() {
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
         fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
-
         kd.tick();
+
+        game.generatePieces();
         player.update(event);
-        enemy.update(event);
-        enemy2.update(event);
         world.update(event);
         stage.update();
 
@@ -120,6 +126,7 @@ function Game() {
             if (!Global.getInstance().listBullet[i])
                 Global.getInstance().listBullet.splice(i, 1);
         }
+
         for (var i = Global.getInstance().listBullet.length - 1; i >=0; i--) {
             if (Global.getInstance().listBullet[i])
                 Global.getInstance().listBullet[i].update(event);
@@ -128,7 +135,7 @@ function Game() {
 
     //Starting of the game
     Game.prototype.generatePieces = function() {
-        for (var i = 0; i < 100; i ++) {
+        while (Global.getInstance().listPiece.length< 100) {
             var typePiece = Math.floor(Math.random() * 5) + 1;
             var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_WIDTH * Constants.RATIO_X));
             var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_HEIGHT * Constants.RATIO_Y));
@@ -159,25 +166,12 @@ function Game() {
     };
 
     Game.prototype.StartGame = function () {
-        console.log('game start');
         Global.getInstance().listPiece = [];
         var pieceData = initShipData();
         player = new Player(pieceData);
         world.addShip(player);
+        Global.getInstance().player = player;
 
-        enemy = new Enemy(pieceData);
-        world.addEnemy(enemy);
-        enemy.x = 300;
-        enemy.y = 300;
-
-
-        enemy2 = new Enemy(pieceData);
-        world.addEnemy(enemy2);
-        enemy2.x = -500;
-        enemy2.y = 300;
-
-
-        game.generatePieces();
         createjs.Ticker.addEventListener('tick', game.update);
         createjs.Ticker.useRAF = true;
         createjs.Ticker.setFPS(60);
@@ -187,8 +181,8 @@ function Game() {
         var piecesData = [];
         var typePiece;
         var arr;
-        for (var i = -3; i < 3; i++) {
-            for (var j = -2; j < 2; j++) {
+        for (var i = -1; i < 2; i++) {
+            for (var j = -2; j < 3; j++) {
                 if (i != 0 || j != 0) {
                     if ((i + j) % 2 == 0) {
                         typePiece = Math.floor(Math.random() * 5) + 1;
