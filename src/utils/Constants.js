@@ -62,7 +62,7 @@ var Constants = function () {
         //Damage
         MACHINE_DAMAGE: 5,
         CANNON_DAMAGE: 20,
-        BOMB_DAMAGE: 400,
+        BOMB_DAMAGE: 300,
 
         //Propulsor power
         PROPULSOR_POWER: 100,
