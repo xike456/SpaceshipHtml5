@@ -35,6 +35,13 @@
             this.velocity = { vX: Math.cos(this.botAngle), vY: Math.sin(this.botAngle) };
         this.x -= this.velocity.vX * this.speed * event.delta/1000;
         this.y += this.velocity.vY * this.speed * event.delta/1000;
+        if(this.x >= Constants.WORLD_RANGE/2 || this.x <= -Constants.WORLD_RANGE/2 ||
+        this.y >= Constants.WORLD_RANGE/2 || this.y <= -Constants.WORLD_RANGE/2){
+            this.botAngle = Math.random() * 360;
+            this.botAngle = this.botAngle * Math.PI / 180;
+            this.velocity = { vX: Math.cos(this.botAngle), vY: Math.sin(this.botAngle) };
+        }
+
     };
 
     window.Enemy = Enemy;

@@ -16,6 +16,7 @@
         this.matrixPath = undefined;
         this.mainIndex = 0;
         this.pieceInRange = [];
+        this.hp = 0;
     };
 
     var prototypeShip = createjs.extend(Ship, createjs.Container);
@@ -31,6 +32,18 @@
             }
         }
         this.calculatePower();
+        this.calculateMainIndex();
+        this.hp = this.mainIndex>=0? this.listPiece[this.mainIndex].health : 0;
+    };
+
+    prototypeShip.calculateMainIndex =function () {
+        for (var i =0; i< this.listPiece.length; i++) {
+            if(this.listPiece[i].type === Constants.COMPONENT_TYPE.CABIN) {
+                this.mainIndex = i;
+                return;
+            }
+        }
+        this.mainIndex = -1;
     };
 
     prototypeShip.addBody = function (pieces) {
@@ -108,12 +121,16 @@
     };
 
     prototypeShip.calculatePower = function () {
+        this.maxPower = 0;
         for (var i = 0; i < this.listPiece.length; i++) {
             if(this.listPiece[i].type === Constants.COMPONENT_TYPE.PROPULSOR){
                 this.maxPower += this.listPiece[i].power;
             }
         }
-        if(this.speedPower ===0) {
+        if(this.speedPower > this.maxPower) {
+            this.speedPower = this.maxPower;
+        }
+        if(this.speedPower === 0) {
             this.speedPower = this.maxPower;
         }
     };
@@ -121,17 +138,17 @@
     prototypeShip.turboBoost = function (deltatime) {
         if(this.speedPower <= 0){
             if(this.speed > Constants.SHIP_SPEED){
-                this.speed -= 50 * deltatime;
+                this.speed -= 70 * deltatime;
             }
             console.log("slow down");
             return;
         }
         if(this.speed < Constants.SHIP_MAX_SPEED && this.speedPower > 0) {
             this.speed += 200 * deltatime;
-            this.speedPower -= 50 * deltatime;
+            this.speedPower -= 100 * deltatime;
         }
         else {
-            this.speedPower -= 50 * deltatime;
+            this.speedPower -= 100 * deltatime;
         }
     };
 

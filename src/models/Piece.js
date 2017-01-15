@@ -110,19 +110,19 @@
                 //Global.getInstance().game.zoomScreen(Global.getInstance().player.listPiece.length);
             return;
         }
-
-        for (var i = 0; i < this.parent.pieceInRange.length; i++) {
-            var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.pieceInRange[i].bitmap, 0, true);
-            if (intersection && this.parent.pieceInRange[i].canCollect) {
-                var piece = this.parent.pieceInRange[i];
-                this.parent.pieceInRange.splice(i, 1);
-                var result = this.parent.addPiece(this, piece);
-                if (result) {
-                    Global.getInstance().listPiece.splice(Global.getInstance().listPiece.indexOf(piece), 1);
-                    break;
+        if(this.parent.pieceInRange)
+            for (var i = 0; i < this.parent.pieceInRange.length; i++) {
+                var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.pieceInRange[i].bitmap, 0, true);
+                if (intersection && this.parent.pieceInRange[i].canCollect) {
+                    var piece = this.parent.pieceInRange[i];
+                    this.parent.pieceInRange.splice(i, 1);
+                    var result = this.parent.addPiece(this, piece);
+                    if (result) {
+                        Global.getInstance().listPiece.splice(Global.getInstance().listPiece.indexOf(piece), 1);
+                        break;
+                    }
                 }
             }
-        }
     };
 
     prototypePiece.calculateNewAroundPos = function () {

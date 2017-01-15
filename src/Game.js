@@ -7,6 +7,9 @@ function Game() {
     var player;
     var world;
     var gameStage;
+    var hpLabel;
+    var msLabel;
+    var fpsLabel;
 
     if(game === undefined || game === null) {
         game = this;
@@ -39,7 +42,7 @@ function Game() {
         var browserW = $(window).width();
         var browserH = $(window).height();
 
-        var zoom = browserH/(1000 + pieceSize * 5);
+        var zoom = browserH/(1100 + pieceSize * 5);
         gameStage.scaleX = zoom;
         gameStage.scaleY = zoom;
     };
@@ -66,10 +69,22 @@ function Game() {
         gameStage = new createjs.Container();
         stage.addChild(gameStage);
 
+        //FPS indicator
         fpsLabel = new createjs.Text("-- fps", "bold 18px Arial", "#FFF");
         stage.addChild(fpsLabel);
         fpsLabel.x = 10;
-        fpsLabel.y = 20;
+        fpsLabel.y = 80;
+
+        //Player HP indicator
+        hpLabel = new createjs.Text("HP: ", "bold 18px Arial", "#FFF");
+        stage.addChild(hpLabel);
+        hpLabel.y = 20;
+        hpLabel.x = 10;
+
+        msLabel = new createjs.Text("MS: ", "bold 18px Arial", "#FFF");
+        stage.addChild(msLabel);
+        msLabel.y = 50;
+        msLabel.x = 10;
 
         //init world
         world = new World();
@@ -112,10 +127,23 @@ function Game() {
         return false;     // cancel default menu
     };
 
+    Game.prototype.updateInfo = function () {
+        hpLabel.text = "      HP: ";
+        for (var i = 0; i< Math.round(Global.getInstance().player.hp/20); i++) {
+            hpLabel.text += "|";
+        }
+        msLabel.text = "Power: ";
+        for (var i = 0; i < Math.round(Global.getInstance().player.speedPower / (Global.getInstance().player.maxPower/25)); i++) {
+            msLabel.text += "|";
+        }
+    };
+
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
         fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
         kd.tick();
+
+        game.updateInfo();
 
         game.generatePieces();
         player.update(event);
@@ -169,6 +197,7 @@ function Game() {
         Global.getInstance().listPiece = [];
         var pieceData = initShipData();
         player = new Player(pieceData);
+        game.zoomScreen(player.listPiece.length);
         world.addShip(player);
         Global.getInstance().player = player;
 
@@ -181,8 +210,8 @@ function Game() {
         var piecesData = [];
         var typePiece;
         var arr;
-        for (var i = -1; i < 2; i++) {
-            for (var j = -2; j < 3; j++) {
+        for (var i = -3; i < 4; i++) {
+            for (var j = -4; j < 4; j++) {
                 if (i != 0 || j != 0) {
                     if ((i + j) % 2 == 0) {
                         typePiece = Math.floor(Math.random() * 5) + 1;

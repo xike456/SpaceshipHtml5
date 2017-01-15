@@ -17,8 +17,8 @@ prototype.initialize = function () {
 };
 
 prototype.botController = function (event) {
-    while(this.enemy.length < 10){
-        var e = new Enemy(Utils.initShipData());
+    while(this.enemy.length < 20){
+        var e = new Enemy(Utils.initShipData(Global.getInstance().player.listPiece.length));
         this.addEnemy(e);
 
         e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);
@@ -27,7 +27,7 @@ prototype.botController = function (event) {
 
     for (var i = 0; i < this.enemy.length; i++){
         if(!this.enemy[i]){
-            var e = new Enemy(Utils.initShipData());
+            var e = new Enemy(Utils.initShipData(Global.getInstance().player.listPiece.length));
             this.enemy[i] = e;
 
             e.x = (Math.random() - 0.5)*(Constants.WORLD_RANGE /4);

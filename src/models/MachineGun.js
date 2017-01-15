@@ -30,7 +30,8 @@
         }
         var posOnShip = this.gun.localToGlobal(this.gun.x + Constants.PIECE_WIDTH / 2, this.gun.y - Constants.PIECE_HEIGHT / 4);
         var posOnWorld = Global.getInstance().world.globalToLocal(posOnShip.x, posOnShip.y);
-        var bullet = new BulletMachine(posOnWorld.x, posOnWorld.y, this.gun.rotation + this.parent.rotation, this.parent);
+        var newRotation = this.gun.rotation + (Math.random() - 0.5) * 20;
+        var bullet = new BulletMachine(posOnWorld.x, posOnWorld.y, newRotation + this.parent.rotation, this.parent);
         Global.getInstance().listBullet.push(bullet);
         Global.getInstance().world.addChild(bullet);
         this.fireDelay = 0;
