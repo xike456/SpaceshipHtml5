@@ -17,6 +17,7 @@
 
         this.speed = 0;
         this.firePower = 0;
+        this.target = undefined;
     }
 
     var prototypeBullet = createjs.extend(Bullet, createjs.Container);
@@ -25,11 +26,13 @@
         var deltaTime = event.delta/1000;
 
         //accelerate
-        this.vX = Math.sin(this.angle * (Math.PI/-180));
-        this.vY = Math.cos(this.angle * (Math.PI/-180));
+        if (!this.target) {
+            this.vX = Math.sin(this.angle * (Math.PI/-180));
+            this.vY = Math.cos(this.angle * (Math.PI/-180));
 
-        this.x = this.x - this.vX * this.speed * deltaTime;
-        this.y = this.y - this.vY * this.speed * deltaTime;
+            this.x = this.x - this.vX * this.speed * deltaTime;
+            this.y = this.y - this.vY * this.speed * deltaTime;
+        }
         if (Utils.getDistanceBetweenTwoPoints(this.x, this.y, this.x0, this.y0) > this.firePower) {
             var explosion = new Explosion(this.x, this.y);
             Global.getInstance().listBullet.splice(Global.getInstance().listBullet.indexOf(this), 1);

@@ -163,7 +163,7 @@ function Game() {
     };
 
     game.generateBomb = function () {
-        while (world.listBomb.length < 10) {
+        while (world.listBomb.length < 15) {
             var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/2);
             var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/2);
 
@@ -216,13 +216,6 @@ function Game() {
         createjs.Ticker.addEventListener('tick', game.update);
         createjs.Ticker.useRAF = true;
         createjs.Ticker.setFPS(60);
-
-        var x = 200;
-        var y = 200;
-
-        var bomb = new Bomb(x, y);
-        world.addChild(bomb);
-        world.listBomb.push(bomb)
     };
 
     function initShipData() {

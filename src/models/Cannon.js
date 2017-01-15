@@ -24,13 +24,13 @@
         Gun.prototype.update.call(this, event);
     };
 
-    Cannon.prototype.fire = function (event) {
+    Cannon.prototype.fire = function (event, target) {
         if (this.fireDelay < Constants.CANNON_FIRE_DELAY) {
             return;
         }
         var posOnShip = this.gun.localToGlobal(this.gun.x + Constants.PIECE_WIDTH / 2, this.gun.y - Constants.PIECE_HEIGHT / 4);
         var posOnWorld = Global.getInstance().world.globalToLocal(posOnShip.x, posOnShip.y);
-        var bullet = new BulletCannon(posOnWorld.x, posOnWorld.y, this.gun.rotation + this.parent.rotation, this.parent);
+        var bullet = new BulletCannon(posOnWorld.x, posOnWorld.y, this.gun.rotation + this.parent.rotation, this.parent, target);
         Global.getInstance().listBullet.push(bullet);
         Global.getInstance().world.addChild(bullet);
         Utils.playSound(Constants.SOUND.CANNON_SHOT);

@@ -153,7 +153,6 @@
             if(this.speed > Constants.SHIP_SPEED){
                 this.speed -= 70 * deltatime;
             }
-            console.log("slow down");
             return;
         }
         if(this.speed < Constants.SHIP_MAX_SPEED && this.speedPower > 0) {

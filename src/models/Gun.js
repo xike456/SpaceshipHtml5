@@ -38,6 +38,7 @@
             }
 
             this.sTarget = this.parent.listTarget[minIndex];
+            var target = undefined;
             var shooting = false;
             var pieceIndex = -1;
             var minRangePiece = -1;
@@ -52,6 +53,7 @@
                     pieceIndex = i;
                     minRangePiece = distance;
                     posE = posP;
+                    target = piece;
                 }
             }
 
@@ -59,8 +61,7 @@
                 var angle = Math.atan2(posE.y - posG.y, posE.x - posG.x);
                 angle = angle * 180 / (Math.PI) + 90 - this.parent.rotation;
                 this.gun.rotation = angle;
-
-                this.fire();
+                this.fire(event, target);
             }
         }
     };

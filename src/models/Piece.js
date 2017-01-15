@@ -146,9 +146,8 @@
                         var posOnWorld = Global.getInstance().world.globalToLocal(posGlobal.x, posGlobal.y);
                         if (Constants.BOMB_DAMAGE >= Utils.getDistanceBetweenTwoPoints(posOnWorld.x, posOnWorld.y, bomb.x, bomb.y)) {
                             piece.health -= (Constants.BOMB_DAMAGE - Utils.getDistanceBetweenTwoPoints(posOnWorld.x, posOnWorld.y, bomb.x, bomb.y));
+                            piece.regenDelay = 3;
                         }
-
-                        piece.regenDelay = 3;
                     }
                 }
             }
