@@ -12,6 +12,7 @@ var Global = function () {
             instance = createInstance();
             instance.isPlayBackgroundSound = true;
             instance.isPlayEffectSound = true;
+            instance.isPlayingBackgroundSound = false;
         }
         return instance;
     }}

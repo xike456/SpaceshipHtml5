@@ -38,10 +38,14 @@ var Utils = function () {
 
         playSound: function (id) {
             if (id === Constants.SOUND.BACKGROUND) {
-                if(Global.getInstance().isPlayBackgroundSound)
+                if(Global.getInstance().isPlayBackgroundSound && !Global.getInstance().isPlayingBackgroundSound) {
                     createjs.Sound.play(id, { loop: -1 });
-                if(!Global.getInstance().isPlayBackgroundSound)
+                    Global.getInstance().isPlayingBackgroundSound = true;
+                }
+                if(!Global.getInstance().isPlayBackgroundSound) {
                     createjs.Sound.stop();
+                    Global.getInstance().isPlayingBackgroundSound = false;
+                }
                 return;
             }
 
