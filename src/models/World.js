@@ -2,6 +2,7 @@ var WORLD_SIZE_PIXEL = Constants.WORLD_RANGE;
 
 function World() {
     prototype.initialize();
+    this.listBomb = [];
 }
 
 var prototype = World.prototype = new createjs.Container();
@@ -90,5 +91,9 @@ prototype.update = function (event) {
     this.botController(event);
     for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
         Global.getInstance().listPiece[i].update(event);
+    }
+
+    for (var i = 0; i < this.listBomb.length; i++) {
+        this.listBomb[i].update(event);
     }
 };

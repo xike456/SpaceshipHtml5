@@ -118,6 +118,7 @@ function Game() {
         kd.tick();
 
         game.generatePieces();
+        game.generateBomb();
         player.update(event);
         world.update(event);
         stage.update();
@@ -133,9 +134,19 @@ function Game() {
         }
     };
 
-    //Starting of the game
+    game.generateBomb = function () {
+        while (world.listBomb.length < 10) {
+            var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/2);
+            var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/2);
+
+            var bomb = new Bomb(x, y);
+            world.addChild(bomb);
+            world.listBomb.push(bomb)
+        }
+    };
+
     Game.prototype.generatePieces = function() {
-        while (Global.getInstance().listPiece.length< 100) {
+        while (Global.getInstance().listPiece.length < 100) {
             var typePiece = Math.floor(Math.random() * 5) + 1;
             var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_WIDTH * Constants.RATIO_X));
             var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_HEIGHT * Constants.RATIO_Y));
@@ -165,16 +176,24 @@ function Game() {
         }
     };
 
+    //Starting of the game
     Game.prototype.StartGame = function () {
         Global.getInstance().listPiece = [];
         var pieceData = initShipData();
         player = new Player(pieceData);
         world.addShip(player);
         Global.getInstance().player = player;
-
+        Utils.playSound(Constants.SOUND.BACKGROUND);
         createjs.Ticker.addEventListener('tick', game.update);
         createjs.Ticker.useRAF = true;
         createjs.Ticker.setFPS(60);
+
+        var x = 200;
+        var y = 200;
+
+        var bomb = new Bomb(x, y);
+        world.addChild(bomb);
+        world.listBomb.push(bomb)
     };
 
     function initShipData() {

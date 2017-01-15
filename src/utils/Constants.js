@@ -18,6 +18,9 @@ var Constants = function () {
         PIECE_WIDTH: 64,
         PIECE_HEIGHT: 64,
 
+        BOMB_WIDTH: 512,
+        BOMB_HEIGHT: 512,
+
         KEYCODE_ENTER: 13,
         KEYCODE_SPACE: 32,
 
@@ -42,7 +45,7 @@ var Constants = function () {
         CANNON_FIREPOWER: 580,
         MACHINE_FIREPOWER: 380,
 
-        CANNON_FIRE_DELAY: 0.5,
+        CANNON_FIRE_DELAY: 1,
         MACHINE_FIRE_DELAY: 0.15,
 
         SHOOT_RANGE: 1000,
@@ -64,6 +67,15 @@ var Constants = function () {
         PROPULSOR_POWER: 100,
 
         NUMBER_OF_ENEMY: 10,
-        WORLD_RANGE: 20000
+        WORLD_RANGE: 20000,
+
+        SOUND: {
+            PIECE_BREAK: 'break',
+            CABIN_BREAK: 'death',
+            MACHINE_SHOT: 'machine_shot',
+            CANNON_SHOT: 'cannon_shot',
+            BACKGROUND: 'background_music',
+            START: 'start'
+        },
     };
 }();

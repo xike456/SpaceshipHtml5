@@ -75,6 +75,11 @@
                 Global.getInstance().world.addChild(this);
                 Global.getInstance().listPiece.push(this);
             }
+            if (this.type === Constants.COMPONENT_TYPE.CABIN) {
+                Utils.playSound(Constants.SOUND.CABIN_BREAK);
+            } else {
+                Utils.playSound(Constants.SOUND.PIECE_BREAK);
+            }
 
             //check if still connect to cabin
             parent.getMatrixPath();
@@ -121,6 +126,20 @@
                     Global.getInstance().listPiece.splice(Global.getInstance().listPiece.indexOf(piece), 1);
                     break;
                 }
+            }
+        }
+
+        for (var i = 0; i < this.parent.bombInRange.length; i++) {
+            if (!this.parent.bombInRange[i]) continue;
+            var intersection = ndgmr.checkPixelCollision(this.bitmap, this.parent.bombInRange[i].bomb, 0, true);
+            if (intersection) {
+                var bomb = this.parent.bombInRange[i];
+                this.parent.bombInRange.splice(i, 1);
+                Global.getInstance().world.listBomb.splice(Global.getInstance().world.listBomb.indexOf(bomb), 1);
+                Global.getInstance().world.removeChild(bomb);
+                var explosion = new Explosion(bomb.x, bomb.y, true);
+                this.parent.listPiece[(this.parent.listPiece.indexOf(this))] = undefined;
+                this.parent.removeChild(this);
             }
         }
     };

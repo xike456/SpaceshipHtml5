@@ -33,6 +33,7 @@
         var bullet = new BulletMachine(posOnWorld.x, posOnWorld.y, this.gun.rotation + this.parent.rotation, this.parent);
         Global.getInstance().listBullet.push(bullet);
         Global.getInstance().world.addChild(bullet);
+        Utils.playSound(Constants.SOUND.MACHINE_SHOT);
         this.fireDelay = 0;
     };
 

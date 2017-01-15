@@ -16,6 +16,7 @@
         this.matrixPath = undefined;
         this.mainIndex = 0;
         this.pieceInRange = [];
+        this.bombInRange = [];
     };
 
     var prototypeShip = createjs.extend(Ship, createjs.Container);
@@ -25,6 +26,7 @@
 
     prototypeShip.update = function (event) {
         this.scanPiece();
+        this.scanBomb();
         for (var i = this.listPiece.length - 1; i >= 0; i--) {
             if (this.listPiece[i] === undefined) {
                 this.listPiece.splice(i, 1);
@@ -95,8 +97,18 @@
         this.pieceInRange = [];
         for (var i = 0; i < Global.getInstance().listPiece.length; i++) {
             if(Utils.getDistanceBetweenTwoPoints(this.x, this.y,
-                    Global.getInstance().listPiece[i].x, Global.getInstance().listPiece[i].y) < Constants.SHOOT_RANGE){
+                    Global.getInstance().listPiece[i].x, Global.getInstance().listPiece[i].y) < this.shootRange){
                 this.pieceInRange.push(Global.getInstance().listPiece[i]);
+            }
+        }
+    };
+
+    prototypeShip.scanBomb = function () {
+        this.bombInRange = [];
+        for (var i = 0; i < Global.getInstance().world.listBomb.length; i++) {
+            if(Utils.getDistanceBetweenTwoPoints(this.x, this.y,
+                    Global.getInstance().world.listBomb[i].x, Global.getInstance().world.listBomb[i].y) < this.shootRange){
+                this.bombInRange.push(Global.getInstance().world.listBomb[i]);
             }
         }
     };

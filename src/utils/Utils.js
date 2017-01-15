@@ -28,6 +28,18 @@ var Utils = function () {
                 }
             }
             return piecesData;
+        },
+
+        playSound: function (id) {
+            if (id === Constants.SOUND.BACKGROUND && Global.getInstance().isPlayBackgroundSound) {
+                createjs.Sound.play(id, { loop: -1 });
+                return;
+            }
+
+            if (id !== Constants.SOUND.BACKGROUND && Global.getInstance().isPlayEffectSound) {
+                var instance = createjs.Sound.play(id);
+                instance.volume = 0.5;
+            }
         }
     };
 }();
