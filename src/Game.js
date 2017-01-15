@@ -10,6 +10,7 @@ function Game() {
     var hpLabel;
     var msLabel;
     var fpsLabel;
+    var clickToStart;
 
     if(game === undefined || game === null) {
         game = this;
@@ -55,6 +56,9 @@ function Game() {
     };
 
     Game.prototype.init = function () {
+        var browserW = $(window).width();
+        var browserH = $(window).height();
+
         var canvas = document.getElementById('gameCanvas');
         stage = new createjs.Stage(canvas);
         keyboardHelper = new KeyboardHelper();
@@ -69,19 +73,40 @@ function Game() {
         gameStage = new createjs.Container();
         stage.addChild(gameStage);
 
+        sound = new createjs.Text("Music: On", "bold 18px Arial", "#FFF");
+        stage.addChild(sound);
+        sound.x = browserW - 100;
+        sound.y = 20;
+        sound.on('click', function () {
+            Global.getInstance().isPlayBackgroundSound = !Global.getInstance().isPlayBackgroundSound;
+            sound.text = Global.getInstance().isPlayBackgroundSound? 'Music: On' : 'Music: Off';
+            Utils.playSound(Constants.SOUND.BACKGROUND);
+            stage.update();
+        });
+
+        effect = new createjs.Text("Sound: On", "bold 18px Arial", "#FFF");
+        stage.addChild(effect);
+        effect.x = browserW - 100;
+        effect.y = 50;
+        effect.on('click', function () {
+            Global.getInstance().isPlayEffectSound = !Global.getInstance().isPlayEffectSound;
+            effect.text = Global.getInstance().isPlayEffectSound? 'Sound: On' : 'Sound: Off';
+            stage.update();
+        });
+
         //FPS indicator
-        fpsLabel = new createjs.Text("-- fps", "bold 18px Arial", "#FFF");
+        fpsLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
         stage.addChild(fpsLabel);
         fpsLabel.x = 10;
         fpsLabel.y = 80;
 
         //Player HP indicator
-        hpLabel = new createjs.Text("HP: ", "bold 18px Arial", "#FFF");
+        hpLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
         stage.addChild(hpLabel);
         hpLabel.y = 20;
         hpLabel.x = 10;
 
-        msLabel = new createjs.Text("MS: ", "bold 18px Arial", "#FFF");
+        msLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
         stage.addChild(msLabel);
         msLabel.y = 50;
         msLabel.x = 10;
@@ -117,7 +142,7 @@ function Game() {
             Global.getInstance().keyboardHelper.currentKeyDown = undefined;
         });
 
-        contentManager = new ContentManager(stage, 800, 480);
+        contentManager = new ContentManager(stage, browserW, browserH);
         contentManager.SetDownloadCompleted(game.StartGame);
         contentManager.StartDownload();
     };
@@ -140,7 +165,17 @@ function Game() {
 
     //Equivalent of Update() methods of XNA
     Game.prototype.update = function (event){
-        fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
+        if(Global.getInstance().player.mainIndex === -1){
+            Global.getInstance().player.mainIndex = -2;
+            console.log("restart")
+            Global.getInstance().game.restartGame();
+            return;
+        }
+        if(Global.getInstance().player.mainIndex === -2) {
+            return;
+        }
+
+        //fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
         kd.tick();
 
         game.updateInfo();
@@ -163,7 +198,7 @@ function Game() {
     };
 
     game.generateBomb = function () {
-        while (world.listBomb.length < 10) {
+        while (world.listBomb.length < 5) {
             var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/2);
             var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/2);
 
@@ -174,10 +209,10 @@ function Game() {
     };
 
     Game.prototype.generatePieces = function() {
-        while (Global.getInstance().listPiece.length < 100) {
+        while (Global.getInstance().listPiece.length < 50) {
             var typePiece = Math.floor(Math.random() * 5) + 1;
-            var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_WIDTH * Constants.RATIO_X));
-            var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE/(Constants.PIECE_HEIGHT * Constants.RATIO_Y));
+            var x = (Math.random() - 0.5)*(Constants.WORLD_RANGE*2/(Constants.RATIO_X * Constants.PIECE_WIDTH));
+            var y = (Math.random() - 0.5)*(Constants.WORLD_RANGE*2/(Constants.RATIO_X * Constants.PIECE_WIDTH));
             var piece;
             switch (typePiece) {
                 case Constants.COMPONENT_TYPE.CABIN:
@@ -199,38 +234,163 @@ function Game() {
                     piece = new Piece(typePiece, x, y);
                     break;
             }
-            world.addChild(piece);
             Global.getInstance().listPiece.push(piece);
+            world.addChild(piece);
         }
+    };
+
+    Game.prototype.restartGame = function () {
+        var browserW = $(window).width();
+        var browserH = $(window).height();
+        var clickToRestart = new createjs.Text('Click To Replay!', 'bold 14px Arial', '#FFF');
+        clickToRestart.x = (browserW/2) - 80;
+        clickToRestart.y = browserH/2;
+        stage.addChild(clickToRestart);
+        var canvas = document.getElementById('gameCanvas');
+        clickToRestart.on("click", function () {
+            var browserW = $(window).width();
+            var browserH = $(window).height();
+
+            var canvas = document.getElementById('gameCanvas');
+            stage = new createjs.Stage(canvas);
+            keyboardHelper = new KeyboardHelper();
+            mouseHelper = new MouseHelper(canvas);
+            Global.getInstance().listTarget = [];
+            Global.getInstance().game = game;
+            Global.getInstance().stage = stage;
+            Global.getInstance().mouseHelper = mouseHelper;
+            Global.getInstance().keyboardHelper = keyboardHelper;
+
+            //init gamestage
+            gameStage = new createjs.Container();
+            stage.addChild(gameStage);
+
+            sound = new createjs.Text("Music: On", "bold 18px Arial", "#FFF");
+            stage.addChild(sound);
+            sound.x = browserW - 100;
+            sound.y = 20;
+            sound.on('click', function () {
+                Global.getInstance().isPlayBackgroundSound = !Global.getInstance().isPlayBackgroundSound;
+                sound.text = Global.getInstance().isPlayBackgroundSound? 'Music: On' : 'Music: Off';
+                Utils.playSound(Constants.SOUND.BACKGROUND);
+                stage.update();
+            });
+
+            effect = new createjs.Text("Sound: On", "bold 18px Arial", "#FFF");
+            stage.addChild(effect);
+            effect.x = browserW - 100;
+            effect.y = 50;
+            effect.on('click', function () {
+                Global.getInstance().isPlayEffectSound = !Global.getInstance().isPlayEffectSound;
+                effect.text = Global.getInstance().isPlayEffectSound? 'Sound: On' : 'Sound: Off';
+                stage.update();
+            });
+
+            //FPS indicator
+            fpsLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
+            stage.addChild(fpsLabel);
+            fpsLabel.x = 10;
+            fpsLabel.y = 80;
+
+            //Player HP indicator
+            hpLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
+            stage.addChild(hpLabel);
+            hpLabel.y = 20;
+            hpLabel.x = 10;
+
+            msLabel = new createjs.Text("", "bold 18px Arial", "#FFF");
+            stage.addChild(msLabel);
+            msLabel.y = 50;
+            msLabel.x = 10;
+
+            //init world
+            world = new World();
+            gameStage.addChild(world);
+
+            world.initWorld();
+            Global.getInstance().world = world;
+            Global.getInstance().listBullet = [];
+            game.resizeToFullWidthCanvas_();
+            game.resizeToFullWidthCanvas();
+            window.addEventListener('resize', game.resizeToFullWidthCanvas, false);
+
+            kd.A.down(function () {
+                Global.getInstance().keyboardHelper.currentKeyDown = kd.A;
+            });
+            kd.D.down(function () {
+                Global.getInstance().keyboardHelper.currentKeyDown = kd.D;
+            });
+            kd.W.down(function () {
+                Global.getInstance().keyboardHelper.currentKeyDown = kd.W;
+            });
+
+            kd.A.up(function () {
+                Global.getInstance().keyboardHelper.currentKeyDown = undefined;
+            });
+            kd.D.up(function () {
+                Global.getInstance().keyboardHelper.currentKeyDown = undefined;
+            });
+            kd.W.up(function () {
+                Global.getInstance().keyboardHelper.currentKeyDown = undefined;
+            });
+
+            canvas.onclick = null;
+
+            stage.removeChild(clickToRestart);
+            Global.getInstance().listPiece = [];
+            var pieceData = initShipData();
+            player = new Player(pieceData);
+            game.zoomScreen(player.listPiece.length);
+            world.addShip(player);
+            Global.getInstance().player = player;
+            Utils.playSound(Constants.SOUND.BACKGROUND);
+        });
+        stage.update();
     };
 
     //Starting of the game
     Game.prototype.StartGame = function () {
-        Global.getInstance().listPiece = [];
-        var pieceData = initShipData();
-        player = new Player(pieceData);
-        game.zoomScreen(player.listPiece.length);
-        world.addShip(player);
-        Global.getInstance().player = player;
+        var browserW = $(window).width();
+        var browserH = $(window).height();
         Utils.playSound(Constants.SOUND.BACKGROUND);
-        createjs.Ticker.addEventListener('tick', game.update);
-        createjs.Ticker.useRAF = true;
-        createjs.Ticker.setFPS(60);
+        clickToStart = new createjs.Text('Welcome: Click To Play!', 'bold 24px Arial', '#FFF');
+        clickToStart.x = (browserW/2) - 150;
+        clickToStart.y = browserH/2;
+        stage.addChild(clickToStart);
+        var canvas = document.getElementById('gameCanvas');
+        clickToStart.on('click', function () {
+            canvas.onclick = null;
+            stage.removeChild(clickToStart);
+            Global.getInstance().listPiece = [];
+            var pieceData = initShipData();
+            player = new Player(pieceData);
+            game.zoomScreen(player.listPiece.length);
+            world.addShip(player);
+            Global.getInstance().player = player;
+            Utils.playSound(Constants.SOUND.BACKGROUND);
+            createjs.Ticker.addEventListener('tick', game.update);
+            createjs.Ticker.useRAF = true;
+            createjs.Ticker.setFPS(60);
+        });
 
-        var x = 200;
-        var y = 200;
-
-        var bomb = new Bomb(x, y);
-        world.addChild(bomb);
-        world.listBomb.push(bomb)
+        // Global.getInstance().listPiece = [];
+        // var pieceData = initShipData();
+        // player = new Player(pieceData);
+        // game.zoomScreen(player.listPiece.length);
+        // world.addShip(player);
+        // Global.getInstance().player = player;
+        // Utils.playSound(Constants.SOUND.BACKGROUND);
+        // createjs.Ticker.addEventListener('tick', game.update);
+        // createjs.Ticker.useRAF = true;
+        // createjs.Ticker.setFPS(60);
     };
 
     function initShipData() {
         var piecesData = [];
         var typePiece;
         var arr;
-        for (var i = -3; i < 4; i++) {
-            for (var j = -4; j < 4; j++) {
+        for (var i = -2; i < 3; i++) {
+            for (var j = -3; j < 3; j++) {
                 if (i != 0 || j != 0) {
                     if ((i + j) % 2 == 0) {
                         typePiece = Math.floor(Math.random() * 5) + 1;

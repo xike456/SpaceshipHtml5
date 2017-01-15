@@ -8,9 +8,9 @@ var Utils = function () {
         },
 
         initShipData: function (size){
-            var index = Math.sqrt(size) + 2;
+            var index = Math.sqrt(size) + 1;
             var k = index + (Math.random()-0.5) * 2;
-            var l = index + (Math.random()-0.5) * 4;
+            var l = index + (Math.random()-0.5) * 3;
 
             l = l < 4 ? 4 : l;
             k = k < 4 ? 4 : k;
@@ -37,14 +37,17 @@ var Utils = function () {
         },
 
         playSound: function (id) {
-            if (id === Constants.SOUND.BACKGROUND && Global.getInstance().isPlayBackgroundSound) {
-                createjs.Sound.play(id, { loop: -1 });
+            if (id === Constants.SOUND.BACKGROUND) {
+                if(Global.getInstance().isPlayBackgroundSound)
+                    createjs.Sound.play(id, { loop: -1 });
+                if(!Global.getInstance().isPlayBackgroundSound)
+                    createjs.Sound.stop();
                 return;
             }
 
             if (id !== Constants.SOUND.BACKGROUND && Global.getInstance().isPlayEffectSound) {
                 var instance = createjs.Sound.play(id);
-                instance.volume = 0.5;
+                instance.volume = 0.6;
             }
         }
     };
