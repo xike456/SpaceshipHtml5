@@ -18,6 +18,9 @@ var Constants = function () {
         PIECE_WIDTH: 64,
         PIECE_HEIGHT: 64,
 
+        BOMB_WIDTH: 512,
+        BOMB_HEIGHT: 512,
+
         KEYCODE_ENTER: 13,
         KEYCODE_SPACE: 32,
 
@@ -31,12 +34,49 @@ var Constants = function () {
         KEYCODE_D: 68,
         KEYCODE_S: 83,
 
+        //Speed
         SHIP_ROTATION_SPEED: 180,
-        SHIP_SPEED: 180,
+        SHIP_SPEED: 200,
+        SHIP_MAX_SPEED: 500,
         BULLET_CANNON_SPEED: 550,
-        BULLET_MACHINE_SPEED: 550,
+        BULLET_MACHINE_SPEED: 750,
+        FLOATING_SPEED: 500,
 
         CANNON_FIREPOWER: 580,
         MACHINE_FIREPOWER: 380,
+
+        CANNON_FIRE_DELAY: 1,
+        MACHINE_FIRE_DELAY: 0.15,
+
+        SHOOT_RANGE: 1300,
+
+        //Health point
+        ARMOR_HP: 300,
+        GUN_HP: 120,
+        NORMAL_HP: 125,
+        PROPULSOR_HP: 100,
+        CABIN_HP: 500,
+
+        REGEN_DELAY: 3,
+
+        //Damage
+        MACHINE_DAMAGE: 5,
+        CANNON_DAMAGE: 20,
+        BOMB_DAMAGE: 300,
+
+        //Propulsor power
+        PROPULSOR_POWER: 100,
+
+        NUMBER_OF_ENEMY: 10,
+        WORLD_RANGE: 6000,
+
+        SOUND: {
+            PIECE_BREAK: 'break',
+            CABIN_BREAK: 'death',
+            MACHINE_SHOT: 'machine_shot',
+            CANNON_SHOT: 'cannon_shot',
+            BACKGROUND: 'background_music',
+            START: 'start'
+        },
     };
 }();

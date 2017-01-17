@@ -10,6 +10,10 @@
         bitmap.regX = Constants.PIECE_WIDTH/2;
         bitmap.regY = Constants.PIECE_HEIGHT/2;
         this.addChild(bitmap);
+
+        this.health = Constants.CABIN_HP;
+        this.maxHealth = Constants.CABIN_HP;
+        this.type = Constants.COMPONENT_TYPE.CABIN;
     }
 
     Cabin.prototype = Object.create(Piece.prototype);

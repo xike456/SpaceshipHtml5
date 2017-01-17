@@ -1,0 +1,15 @@
+{
+  "name": "spaceship",
+  "version": "1.0.0",
+  "description": "Game create with createJS, host on nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start":"node index.js"
+  },
+  "author": "Quang & MPhu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
